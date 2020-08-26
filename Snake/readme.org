@@ -1,0 +1,10 @@
+#+startup: indent
+#+author: LanderX
+
+* Snake
+
+/Project 1/
+
+** Update log
+- <2020-08-26 三> Basic requirements, published as v1.0.
+
