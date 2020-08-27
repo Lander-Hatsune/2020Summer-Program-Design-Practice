@@ -11,6 +11,8 @@
 #include <QFileDialog>
 #include <cstring>
 #include <string>
+#include <QPushButton>
+#include <QAction>
 #include "game.h"
 
 QT_BEGIN_NAMESPACE
@@ -70,5 +72,6 @@ private:
     int score;
     void paintEvent(QPaintEvent*);
     void rend();
+    void setbools(bool r, bool p, bool q, bool s, bool l);
 };
 #endif // MAINWINDOW_H

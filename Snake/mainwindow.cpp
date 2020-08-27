@@ -168,6 +168,20 @@ void MainWindow::rend()
     */
 }
 
+void MainWindow::setbools(bool r, bool p, bool q, bool s, bool l)
+{
+    ui->b_stt->setDisabled(r);
+    ui->actionStart->setDisabled(r);
+    ui->b_pause->setDisabled(p);
+    ui->actionPause->setDisabled(p);
+    ui->b_quit->setDisabled(q);
+    ui->actionQuit->setDisabled(q);
+    ui->b_save->setDisabled(s);
+    ui->actionSave->setDisabled(s);
+    ui->b_load->setDisabled(l);
+    ui->actionLoad->setDisabled(l);
+}
+
 void MainWindow::dealgameover()
 {
     QMessageBox overmsg;
@@ -210,17 +224,7 @@ void MainWindow::on_b_stt_clicked()
         ui->actionStart->setIcon(QIcon(":/new/prefix1/redo.jpg"));
         ui->lbl_state->setText("");
 
-        ui->b_load->setDisabled(true);
-        ui->actionLoad->setDisabled(true);
-        ui->b_save->setDisabled(true);
-        ui->actionSave->setDisabled(true);
-        ui->b_stt->setDisabled(true);
-        ui->actionStart->setDisabled(true);
-
-        ui->b_quit->setDisabled(false);
-        ui->actionQuit->setDisabled(false);
-        ui->b_pause->setDisabled(false);
-        ui->actionPause->setDisabled(false);
+        setbools(true, false, false, true, true);
 
         int fx = (rand() % GRID_SIZE) + 1;
         int fy = (rand() % GRID_SIZE) + 1;
@@ -237,17 +241,8 @@ void MainWindow::on_b_stt_clicked()
         ui->b_pause->setText("Pause");
         ui->actionPause->setText("Pause");
         ui->actionPause->setIcon(QIcon(":/new/prefix1/pause.jpg"));
-        ui->b_pause->setDisabled(true);
-        ui->actionPause->setDisabled(true);
-        ui->b_save->setDisabled(true);
-        ui->actionSave->setDisabled(true);
 
-        ui->b_quit->setDisabled(false);
-        ui->actionQuit->setDisabled(false);
-        ui->b_stt->setDisabled(false);
-        ui->actionStart->setDisabled(false);
-        ui->b_load->setDisabled(false);
-        ui->actionLoad->setDisabled(false);
+        setbools(false, true, false, true, false);
 
         ui->lbl_state->setText("<html><head/><body><p align=\"center\"><span style=\" font-size:48pt; font-weight:600; font-style:italic; color:#53a485;\">Initializing</span></p></body></html>");
         ui->b_stt->setText("Start");
@@ -265,16 +260,7 @@ void MainWindow::on_b_pause_clicked()
     if (ui->b_pause->text() == "Pause") {
         ui->lbl_state->setText("<html><head/><body><p align=\"center\"><span style=\" font-size:48pt; font-weight:600; font-style:italic; color:#53a485;\">Paused</span></p></body></html>");
 
-        ui->b_stt->setDisabled(false);
-        ui->actionStart->setDisabled(false);
-        ui->b_quit->setDisabled(false);
-        ui->actionQuit->setDisabled(false);
-        ui->b_pause->setDisabled(false);
-        ui->actionPause->setDisabled(false);
-        ui->b_save->setDisabled(false);
-        ui->actionSave->setDisabled(false);
-        ui->b_load->setDisabled(true);
-        ui->actionLoad->setDisabled(true);
+        setbools(false, false, false, false, true);
 
         roundtimer->stop();
         rendtimer->stop();
@@ -283,17 +269,7 @@ void MainWindow::on_b_pause_clicked()
         ui->actionPause->setIcon(QIcon(":/new/prefix1/play.jpg"));
     }
     else {
-        ui->b_load->setDisabled(true);
-        ui->actionLoad->setDisabled(true);
-        ui->b_save->setDisabled(true);
-        ui->actionSave->setDisabled(true);
-        ui->b_stt->setDisabled(true);
-        ui->actionStart->setDisabled(true);
-
-        ui->b_quit->setDisabled(false);
-        ui->actionQuit->setDisabled(false);
-        ui->b_pause->setDisabled(false);
-        ui->actionPause->setDisabled(false);
+        setbools(true, false, false, true, true);
 
         ui->lbl_state->setText("");
         roundtimer->start();
