@@ -1,7 +1,7 @@
 #include "game.h"
 using namespace std;
 
-void Snakegame::sleepcp(int milliseconds) // 跨平台 sleep 函数
+void Snakegame::sleepcp(int milliseconds)
 {
     #ifdef _WIN32
         Sleep(milliseconds);
@@ -78,7 +78,7 @@ void Snakegame::change_dir(int new_dir) {
 void Snakegame::save(const char* path) {
     freopen(path, "w", stdout);
     printf("%d %d %d\n", stretch, dir, score);
-    printf("%d\n", snake.size());
+    printf("%lu\n", snake.size());
     int snake_size = snake.size();
     for (int i = 1; i <= snake_size; i++) {
         cord cur_cord = snake.front();

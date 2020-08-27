@@ -41,25 +41,15 @@ signals:
 private slots:
     void nxt_round();
     void dealgameover();
-
     void on_b_stt_clicked();
-
     void on_b_pause_clicked();
-
     void on_b_quit_clicked();
-
     void on_actionStart_triggered();
-
     void on_actionPause_triggered();
-
     void on_actionQuit_triggered();
-
     void on_b_save_clicked();
-
     void on_b_load_clicked();
-
     void on_actionSave_triggered();
-
     void on_actionLoad_triggered();
 
 private:
@@ -69,9 +59,8 @@ private:
     Ui::MainWindow *ui;
     QPixmap screen;
     void Terrain(int, int, int);
-    int score;
     void paintEvent(QPaintEvent*);
-    void rendbg();
+    void rend();
     void setbools(bool r, bool p, bool q, bool s, bool l);
 };
 #endif // MAINWINDOW_H
