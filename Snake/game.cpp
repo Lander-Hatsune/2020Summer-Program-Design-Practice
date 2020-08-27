@@ -69,6 +69,8 @@ int Snakegame::move() {
 void Snakegame::change_dir(int new_dir) {
     if (abs(new_dir - this->dir) == 2)
         return;
+    if (new_dir == this->dir)
+        return;
     this->dir = new_dir;
     sleepcp(60);
 }
@@ -95,25 +97,29 @@ void Snakegame::save(const char* path) {
 
 void Snakegame::load(const char* path) {
     freopen(path, "r", stdin);
-    
-    scanf("%d %d %d", &stretch, &dir, &score);
-    int snake_size;
-    scanf("%d", &snake_size);
+    try {
+        scanf("%d %d %d", &stretch, &dir, &score);
+        int snake_size;
+        scanf("%d", &snake_size);
 
-    while (!snake.empty()) {
-        snake.pop();
-    }
-    
-    for (int i = 1; i <= snake_size; i++) {
-        cord cur_cord;
-        scanf("%d %d", &cur_cord.x, &cur_cord.y);
-        snake.push(cur_cord);
-    }
-    
-    for (int i = 1; i <= GRID_SIZE; i++) {
-        for (int j = 1; j <= GRID_SIZE; j++) {
-            scanf("%d ", &arena[i][j]);
+        while (!snake.empty()) {
+            snake.pop();
         }
+
+        for (int i = 1; i <= snake_size; i++) {
+            cord cur_cord;
+            scanf("%d %d", &cur_cord.x, &cur_cord.y);
+            snake.push(cur_cord);
+        }
+
+        for (int i = 1; i <= GRID_SIZE; i++) {
+            for (int j = 1; j <= GRID_SIZE; j++) {
+                scanf("%d ", &arena[i][j]);
+            }
+        }
+    }  catch (...) {
+        printf("Invalid file\n");
     }
+
     freopen("CON", "r", stdout);
 }

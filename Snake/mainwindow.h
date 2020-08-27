@@ -71,7 +71,7 @@ private:
     void Terrain(int, int, int);
     int score;
     void paintEvent(QPaintEvent*);
-    void rend();
+    void rendbg();
     void setbools(bool r, bool p, bool q, bool s, bool l);
 };
 #endif // MAINWINDOW_H

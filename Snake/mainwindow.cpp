@@ -37,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->b_pause->setDisabled(true);
     ui->actionPause->setDisabled(true);
 
-    rend();
+    rendbg();
 
 }
 
@@ -86,7 +86,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *ev)
             game.arena[x][y] = 0;
             vis[x][y] = 1;
         }
-        rend();
+        rendbg();
         update();
     }
 }
@@ -107,7 +107,7 @@ void MainWindow::mousePressEvent(QMouseEvent *ev)
             game.arena[x][y] = 0;
             vis[x][y] = 1;
         }
-        rend();
+        rendbg();
         update();
     }
 }
@@ -125,7 +125,7 @@ void MainWindow::nxt_round()
         emit gameover();
     }
     ui->lcd_score->display(game.score);
-    rend();
+    rendbg();
 }
 
 void MainWindow::paintEvent(QPaintEvent *event)
@@ -133,7 +133,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
     ui->lbl_main->setPixmap(screen);
 }
 
-void MainWindow::rend()
+void MainWindow::rendbg()
 {
     this->screen.fill(Qt::darkGray);
     for (int i = 1; i <= GRID_SIZE; i++) {
@@ -233,7 +233,7 @@ void MainWindow::on_b_stt_clicked()
            fy = (rand() % GRID_SIZE) + 1;
         }
         game.arena[fx][fy] = 1;
-        rend();
+        rendbg();
         roundtimer->start();
         rendtimer->start();
     }
@@ -249,7 +249,7 @@ void MainWindow::on_b_stt_clicked()
         ui->actionStart->setText("Start");
         ui->actionStart->setIcon(QIcon(":/new/prefix1/play.jpg"));
         game = Snakegame();
-        rend();
+        rendbg();
         roundtimer->stop();
         rendtimer->stop();
     }
@@ -339,7 +339,7 @@ void MainWindow::on_b_load_clicked()
     if (fileName.isEmpty()) return;
     game.load(fileName.toStdString().c_str());
     ui->lcd_score->display(game.score);
-    rend();
+    rendbg();
     update();
 }
 
