@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     game = Snakegame();
+    this->setWindowTitle("Snake");
     this->setMouseTracking(true);
 
     this->roundtimer = new QTimer();
@@ -195,7 +196,9 @@ void MainWindow::setbools(bool r, bool p, bool q, bool s, bool l)
 
 void MainWindow::dealgameover()
 {
+    ui->lbl_state->setText("<html><head/><body><p align=\"center\"><span style=\" font-size:48pt; font-weight:600; font-style:italic; color:#53a485;\">GAME OVER</span></p></body></html>");
     QMessageBox overmsg;
+    overmsg.setWindowTitle("Game over");
     overmsg.setText("Game over, try again?");
     overmsg.setStandardButtons(QMessageBox::Yes | QMessageBox::Close);
     int ret = overmsg.exec();
