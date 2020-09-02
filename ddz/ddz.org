@@ -1,0 +1,28 @@
+#+startup: indent
+* backend
+** socket
+*** socket
+- inherit QTcpSocket
+**** socket()
+**** send(msg)
+**** recv()
+
+*** server
+- inherit socket
+**** server(port)
+**** accept()
+
+*** client
+- inherit socket
+**** client(ip, port)
+
+** gamecore
+*** game// only run on server
+- include server
+**** getlord()
+**** prev_cards
+**** valid(cards)// localize to clients
+**** put(number, cards)
+
+* frontend
+

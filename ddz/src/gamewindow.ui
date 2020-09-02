@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>GameWindow</class>
+ <widget class="QWidget" name="GameWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1283</width>
+    <height>815</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#GameWindow {
+border-image: url(:/new/prefix1/bg.jpg)
+}
+
+#GameWindow * {
+border-image:url()
+}</string>
+  </property>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
