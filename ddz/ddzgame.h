@@ -17,6 +17,9 @@ typedef struct card {
             return val < x.val;
         else return color < x.color;
     }
+    bool operator == (const struct card& x) const {
+        return color == x.color && val == x.val;
+    }
 }card;
 
 class ddzgame {
@@ -26,8 +29,8 @@ public:
     card lord_s[3];
     int lord;
     static bool greater(set<card> old, set<card> cur);
-    bool establish(int num, set<card> cards);
     string get_player_cards(int num);
     string get_lord_cards();
-    void setlord(int);
+    static string get_str_from_cards(set<card>);
+    static set<card> get_cards_from_str(string cards);
 };

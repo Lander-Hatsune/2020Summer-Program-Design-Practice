@@ -34,6 +34,8 @@ GameWindow::GameWindow(QWidget *parent,
     memset(lbl_lord_card, 0, sizeof(lbl_lord_card));
     memset(lbl_left_cards, 0, sizeof(lbl_left_cards));
     memset(lbl_right_cards, 0, sizeof(lbl_right_cards));
+    memset(b_cards, 0, sizeof(b_cards));
+    memset(lbl_last_estab, 0, sizeof(lbl_last_estab));
     ui->b_pass->hide();
     ui->b_establish->hide();
     ui->b_judgelord->hide();
@@ -48,6 +50,7 @@ GameWindow::GameWindow(QWidget *parent,
     connect(this, SIGNAL(right_cards(int)), this, SLOT(draw_right_cards(int)));
     connect(this, SIGNAL(wait_dz(string)), this, SLOT(deal_wait_dz(string)));
     connect(this, SIGNAL(get_dz(string)), this, SLOT(deal_get_dz(string)));
+    connect(this, SIGNAL(is_valid()), this, SLOT(judge_valid()));
     sock->connectToHost(ip, port);
 }
 
@@ -78,6 +81,12 @@ void GameWindow::deal_msg()
         lbl_state[number]->setGeometry(580, 460, 100, 50);
         lbl_state[(number + 1) % 3]->setGeometry(1000, 300, 200, 50);
         lbl_state[(number + 2) % 3]->setGeometry(200, 300, 200, 50);
+        ui->lbl_self->setText(QString::fromStdString("No." + to_string(number)));
+        ui->lbl_left->setText(QString::fromStdString("No." + to_string((number + 2) % 3)));
+        ui->lbl_right->setText(QString::fromStdString("No." + to_string((number + 1) % 3)));
+        indicator[number] = ui->lbl_self;
+        indicator[(number + 2) % 3] = ui->lbl_left;
+        indicator[(number + 1) % 3] = ui->lbl_right;
     }
     else if (head == STT) {
         for (int i = 0; i < 34; i += 2) {
@@ -135,7 +144,53 @@ void GameWindow::deal_msg()
             lbl_lord_card[i]->setPixmap(pxmap);
         }
     }
+    else if (head == NXT_RND) {
+        for (int i = 0; i < 3; i++) {
+            int num_of_cards = stoi(msg.substr(0, msg.find(':')));
+            msg = msg.substr(msg.find(':') + 1);
+            if (i == number) {
+                continue;
+            }
+            else if (i == (number + 1) % 3) {
+                draw_right_cards(num_of_cards);
+            }
+            else if (i == (number + 2) % 3) {
+                draw_left_cards(num_of_cards);
+            }
+        }
+        last_player = msg[0] - '0';
+        msg = msg.substr(msg.find(':') + 1);
+        cur_player = msg[0] - '0';
+        msg = msg.substr(msg.find(':') + 1);
+        last_estab = ddzgame::get_cards_from_str(msg);
+        show_last_cards();
 
+    }
+    else if (head == UR_TURN) {
+        ui->b_establish->show();
+        ui->b_pass->show();
+        judge_valid();
+    }
+    else if (head == FAIL) {
+        QMessageBox box(this);
+        box.setText("你输了,继续游戏?");
+        box.setStandardButtons(QMessageBox::Yes | QMessageBox::Close);
+        int ret = box.exec();
+        if (ret == QMessageBox::Yes) {
+
+        }
+        else this->close();
+    }
+    else if (head == SUCC) {
+        QMessageBox box(this);
+        box.setText("你赢了,继续游戏?");
+        box.setStandardButtons(QMessageBox::Yes | QMessageBox::Close);
+        int ret = box.exec();
+        if (ret == QMessageBox::Yes) {
+
+        }
+        else this->close();
+    }
     if (sock->bytesAvailable() > 0) {
         printf("left %d bytes\n", sock->bytesAvailable());
         deal_msg();
@@ -154,6 +209,11 @@ void GameWindow::draw_my_cards(set<card> cards)
 {
 
     ui->lbl_waiting->setText("");
+
+    for (int i = 0; i < 25; i++) {
+        if (b_cards[i])
+            b_cards[i]->hide();
+    }
 
     int i = 0;
     for (set<card>::iterator it = cards.begin();
@@ -179,6 +239,7 @@ void GameWindow::draw_my_cards(set<card> cards)
                                         ori_pos.width(), ori_pos.height());
                 ready_estab.erase(btn_to_card[i]);
             }
+            emit is_valid();
         });
     }
 }
@@ -287,4 +348,57 @@ void GameWindow::on_b_notjudgelord_clicked()
     lbl_state[number]->show();
     ui->b_judgelord->hide();
     ui->b_notjudgelord->hide();
+}
+
+void GameWindow::on_b_establish_clicked()
+{
+    send(sock, ddzgame::get_str_from_cards(ready_estab) + ":" + to_string(my_cards.empty()));
+    for (set<card>::iterator it = ready_estab.begin();
+         it != ready_estab.end(); ++it) {
+        my_cards.erase(*it);
+    }
+    draw_my_cards(my_cards);
+    ui->b_establish->hide();
+    ui->b_pass->hide();
+}
+
+void GameWindow::on_b_pass_clicked()
+{
+    send(sock, (string)"0");
+}
+
+void GameWindow::judge_valid()
+{
+    if (number == last_player) {
+        last_estab.clear();
+    }
+    if (ddzgame::greater(last_estab, ready_estab)) {
+        ui->b_establish->setEnabled(true);
+    }
+    else {
+        ui->b_establish->setEnabled(false);
+    }
+    if (number == last_player) {
+        ui->b_pass->setEnabled(false);
+    }
+    else {
+        ui->b_pass->setEnabled(true);
+    }
+}
+
+void GameWindow::show_last_cards()
+{
+    for (int i = 0; i < 25; i++) {
+        if (lbl_last_estab[i])
+            lbl_last_estab[i]->hide();
+    }
+    int i = 0;
+    for (set<card>::iterator it = last_estab.begin();
+         it != last_estab.end(); ++it, ++i) {
+        lbl_last_estab[i] = new QLabel(this);
+        QPixmap pxmap(QPixmap(tr((":/new/card/resources/" + get_cardname(*it) + ".png").c_str())));
+        lbl_last_estab[i]->setPixmap(pxmap);
+        lbl_last_estab[i]->setGeometry(200 + 40 * i, 210, card_width / 1.2, card_height / 1.2);
+        lbl_last_estab[i]->show();
+    }
 }

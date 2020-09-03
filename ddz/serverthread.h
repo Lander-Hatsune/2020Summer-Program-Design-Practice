@@ -20,6 +20,9 @@ private:
     int cnt;
     void run();
     ddzgame* game;
+
+    set<card> last_estab;
+    int last_player;
 };
 
 #endif // SERVERTHREAD_H

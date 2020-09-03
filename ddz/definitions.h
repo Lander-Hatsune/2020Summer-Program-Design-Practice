@@ -12,4 +12,10 @@ const string GET_DZ = ":GD:";
 const string WAIT_DZ = ":WD:";
 const string DZ = ":DZ:";
 
+const string NXT_RND = ":NR:";
+const string UR_TURN = ":YT:";
+
+const string SUCC = ":SC:";
+const string FAIL = ":FL:";
+
 #endif // DEFINITIONS_H

@@ -9,6 +9,8 @@ serverthread::serverthread()
     connect(server, SIGNAL(newConnection()), this, SLOT(accept()));
 }
 
+
+
 void serverthread::accept()
 {
     printf("server: new client\n");
@@ -36,9 +38,8 @@ void serverthread::run()
         send(socks[i], STT + player_cards + lord_cards);
         //send(socks[i], (string)"asd");
     }
-    sleepcp(1000);
-    // judge the lord
 
+    // judge the lord
     srand(time(NULL));
     int cur_lord_to_judge = 1;
     int lord = cur_lord_to_judge;
@@ -53,7 +54,7 @@ void serverthread::run()
         }
         send(socks[cur_lord_to_judge], GET_DZ + cur_state);
         string ans_str;
-        socks[cur_lord_to_judge]->waitForReadyRead();
+        socks[cur_lord_to_judge]->waitForReadyRead(-1);
         ans_str = recv(socks[cur_lord_to_judge]);
 
         int ans = ans_str[0] - '0';
@@ -73,5 +74,52 @@ void serverthread::run()
         send(socks[i], DZ + to_string(lord));
     }
 
-    while (true);
+    // start
+    last_estab.clear();
+    last_player = lord;
+    int cur_player = lord;
+    int winner = 3;
+    while (true) {
+        string sizes = "";
+        for (int i = 0; i < 3; i++) {
+            sizes += to_string(game->player_cards[i].size());
+            if (i != 2) sizes += ":";
+        }
+        string last_estab_str = ddzgame::get_str_from_cards(last_estab);
+        for (int i = 0; i < 3; i++) {
+            send(socks[i], NXT_RND + sizes + ":" +
+                 to_string(last_player) + ":" +
+                 to_string(cur_player) + ":" + last_estab_str);
+        }
+        send(socks[cur_player], UR_TURN);
+        socks[cur_player]->waitForReadyRead(-1);
+        string ans = recv(socks[cur_player]);
+        if (ans == "0") {
+            ;
+        }
+        else {
+            last_player = cur_player;
+            last_estab = ddzgame::get_cards_from_str(ans.substr(0, ans.find(":")));
+            ans = ans.substr(ans.find(':') + 1);
+            if (ans[0] == '1') {
+                winner = cur_player;
+                break;
+            }
+        }
+        (cur_player += 1) %= 3;
+    }
+    if (lord == cur_player) {
+        for (int i = 0; i < 3; i++) {
+            if (i != cur_player)
+                send(socks[i], FAIL);
+            else send(socks[i], SUCC);
+        }
+    }
+    else {
+        for (int i = 0; i < 3; i++) {
+            if (i != lord)
+                send(socks[i], SUCC);
+            else send(socks[i], FAIL);
+        }
+    }
 }

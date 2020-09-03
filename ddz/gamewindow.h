@@ -9,6 +9,7 @@
 #include <string>
 #include <QPushButton>
 #include <QLabel>
+#include <QMessageBox>
 using namespace std;
 
 namespace Ui {
@@ -32,6 +33,8 @@ signals:
     void right_cards(int);
     void wait_dz(string);
     void get_dz(string);
+    void is_valid();
+
 private slots:
     void deal_msg();
     void showwaiting(int);
@@ -43,6 +46,9 @@ private slots:
     void deal_get_dz(string);
     void on_b_judgelord_clicked();
     void on_b_notjudgelord_clicked();
+    void on_b_establish_clicked();
+    void on_b_pass_clicked();
+    void judge_valid();
 
 private:
     QPushButton* b_cards[25];
@@ -59,9 +65,15 @@ private:
     int judgelord;
     bool is_rob;
 
+    QLabel* lbl_last_estab[25];
     set<card> ready_estab;
     set<card> last_estab;
     int last_player;
+    int cur_player;
+
+    void show_last_cards();
+
+    QLabel* indicator[4];
 };
 
 #endif // GAMEWINDOW_H
