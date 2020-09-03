@@ -30,6 +30,8 @@ signals:
     void got_lord_cards();
     void left_cards(int);
     void right_cards(int);
+    void wait_dz(string);
+    void get_dz(string);
 private slots:
     void deal_msg();
     void showwaiting(int);
@@ -37,6 +39,11 @@ private slots:
     void draw_lord_cards();
     void draw_left_cards(int);
     void draw_right_cards(int);
+    void deal_wait_dz(string);
+    void deal_get_dz(string);
+    void on_b_judgelord_clicked();
+    void on_b_notjudgelord_clicked();
+
 private:
     QPushButton* b_cards[25];
     card btn_to_card[25];
@@ -48,6 +55,13 @@ private:
     QTcpSocket* sock;
     Ui::GameWindow *ui;
     int number;
+    QLabel* lbl_state[3];
+    int judgelord;
+    bool is_rob;
+
+    set<card> ready_estab;
+    set<card> last_estab;
+    int last_player;
 };
 
 #endif // GAMEWINDOW_H

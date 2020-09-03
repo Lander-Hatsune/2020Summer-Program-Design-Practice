@@ -7,7 +7,6 @@ serverthread::serverthread()
     server->listen(QHostAddress::Any, PORT);
     printf("server ready\n");
     connect(server, SIGNAL(newConnection()), this, SLOT(accept()));
-
 }
 
 void serverthread::accept()
@@ -37,21 +36,42 @@ void serverthread::run()
         send(socks[i], STT + player_cards + lord_cards);
         //send(socks[i], (string)"asd");
     }
-
+    sleepcp(1000);
     // judge the lord
-    int cur_lord_to_judge = rand() % 3;
+
+    srand(time(NULL));
+    int cur_lord_to_judge = 1;
     int lord = cur_lord_to_judge;
     string cur_state = "000";
     for (int i = 0; i < 3; i++) {
         cur_state[cur_lord_to_judge] = '1';
+        printf("server: cur lord to judge: %d\n", cur_lord_to_judge);
+        for (int j = 0; j < 3; j++) {
+            if (j == cur_lord_to_judge)
+                continue;
+            send(socks[j], WAIT_DZ + cur_state);
+        }
         send(socks[cur_lord_to_judge], GET_DZ + cur_state);
-        int ans = recv(socks[cur_lord_to_judge])[0] - '0';
+        string ans_str;
+        socks[cur_lord_to_judge]->waitForReadyRead();
+        ans_str = recv(socks[cur_lord_to_judge]);
+
+        int ans = ans_str[0] - '0';
+        printf("got ans: %d\n", ans);
+        //int ans = 0;
         if (ans) {
             cur_state[cur_lord_to_judge] = '2';
             lord = cur_lord_to_judge;
         }
+        else {
+            cur_state[cur_lord_to_judge] = '3';
+        }
         cur_lord_to_judge += 1;
         cur_lord_to_judge %= 3;
     }
+    for (int i = 0; i < 3; i++) {
+        send(socks[i], DZ + to_string(lord));
+    }
+
     while (true);
 }

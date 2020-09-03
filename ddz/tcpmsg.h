@@ -26,7 +26,7 @@ inline void send(QTcpSocket* sock, string msg) {
     printf("sent: ");
     cout << msg + "*MK*" << endl;
     //sleepcp(1000);
-    sock->write((msg + "*MK*").c_str(), (msg + "*MK*").length());
+    sock->write((msg + "*MK*").c_str());
     sock->flush();
 }
 

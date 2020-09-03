@@ -10,15 +10,15 @@ ddzgame::ddzgame() {
             allcards[cnt++] = (card){c, v};
         }
     }
-    allcards[53] = (card){0, 16};// black joker
-    allcards[54] = (card){0, 17};// red joker
+    allcards[52] = (card){0, 16};// black joker
+    allcards[53] = (card){0, 17};// red joker
     printf("game: all cards generated\n");
 
     random_shuffle(allcards, allcards + 54);
     printf("game: cards shuffled\n");
 
     for (int i = 51; i < 54; i++) {
-        lord_s[i] = allcards[i];
+        lord_s[i - 51] = allcards[i];
     }
     for (int i = 0; i < 51; i++) {
         player_cards[i / 17].insert(allcards[i]);

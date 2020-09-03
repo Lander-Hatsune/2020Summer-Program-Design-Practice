@@ -12,3 +12,23 @@
 - socket doesn't recv messages ::
   - judge =sock->bytesAvailable()= at the end of =deal_msg()=.
   - =flush()= after =write()=.
+
+- cannot pass the signal sender to the slot ::
+  - use lambda function right in the =connect= function:
+    #+begin_src cpp
+    connect(b_cards[i], &QPushButton::clicked,
+                [=]()
+        {
+            QRect ori_pos = b_cards[i]->geometry();
+            if (ori_pos.y() > 520) {
+                b_cards[i]->setGeometry(ori_pos.x(), ori_pos.y() - 40,
+                                        ori_pos.width(), ori_pos.height());
+                ready_estab.insert(btn_to_card[i]);
+            }
+            else {
+                b_cards[i]->setGeometry(ori_pos.x(), ori_pos.y() + 40,
+                                        ori_pos.width(), ori_pos.height());
+                ready_estab.erase(btn_to_card[i]);
+            }
+        });
+    #+end_src

@@ -6,20 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1264</width>
-    <height>797</height>
+    <width>1341</width>
+    <height>841</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#GameWindow {
-border-image: url(:/new/background/resources/bg.jpg)
-}
-#GameWindow * {
-border-image: url()
-}</string>
+   <string notr="true"/>
   </property>
   <widget class="QLabel" name="lbl_waiting">
    <property name="geometry">
@@ -32,6 +27,58 @@ border-image: url()
    </property>
    <property name="text">
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:36pt; color:#fcaf3e;&quot;&gt;等待玩家就绪:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="b_judgelord">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>460</y>
+     <width>109</width>
+     <height>36</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>叫地主</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="b_notjudgelord">
+   <property name="geometry">
+    <rect>
+     <x>750</x>
+     <y>460</y>
+     <width>109</width>
+     <height>36</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>不叫</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="b_establish">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>450</y>
+     <width>109</width>
+     <height>36</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>出牌</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="b_pass">
+   <property name="geometry">
+    <rect>
+     <x>750</x>
+     <y>450</y>
+     <width>109</width>
+     <height>36</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>不出</string>
    </property>
   </widget>
  </widget>
