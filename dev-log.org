@@ -1,0 +1,14 @@
+#+startup: indent
+#+author: LanderX
+* Snake
+** exp
+- do the painting and rendering job in different threads.
+
+** problem shooting
+
+
+* DDZ
+** problem shooting
+- socket doesn't recv messages ::
+  - judge =sock->bytesAvailable()= at the end of =deal_msg()=.
+  - =flush()= after =write()=.
