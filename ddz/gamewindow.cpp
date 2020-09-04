@@ -163,6 +163,9 @@ void GameWindow::deal_msg()
         cur_player = msg[0] - '0';
         msg = msg.substr(msg.find(':') + 1);
         last_estab = ddzgame::get_cards_from_str(msg);
+        if (number == last_player) {
+            last_estab.clear();
+        }
         show_last_cards();
 
         for (int i = 0; i < 3; i++) {
@@ -380,9 +383,9 @@ void GameWindow::on_b_pass_clicked()
 
 void GameWindow::judge_valid()
 {
-    if (number == last_player) {
-        last_estab.clear();
-    }
+    cout << "--judge valid--:" << endl;
+    cout << "ready_estab: " << ddzgame::get_str_from_cards(ready_estab) << endl;
+    cout << "last_estab: " << ddzgame::get_str_from_cards(last_estab) << endl;
     if (ddzgame::greater(last_estab, ready_estab)) {
         ui->b_establish->setEnabled(true);
     }
