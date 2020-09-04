@@ -141,6 +141,7 @@ void GameWindow::deal_msg()
         for (set<card>::iterator it = lord_cards.begin();
              it != lord_cards.end(); it++, i++) {
             QPixmap pxmap(QPixmap(tr((":/new/card/resources/" + get_cardname(*it) + ".png").c_str())));
+            pxmap = pxmap.scaledToWidth(card_width / 1.5);
             lbl_lord_card[i]->setPixmap(pxmap);
         }
     }
@@ -276,6 +277,7 @@ void GameWindow::draw_lord_cards()
         lbl_lord_card[i] = new QLabel(this);
         lbl_lord_card[i]->setGeometry(420 + i * card_width / 1.5, 40, card_width / 1.5, card_height / 1.5);
         QPixmap bgpx(tr(":/new/card/resources/back.png"));
+        bgpx = bgpx.scaledToWidth(card_width / 1.5);
         lbl_lord_card[i]->setPixmap(bgpx);
         lbl_lord_card[i]->show();
     }
@@ -294,6 +296,7 @@ void GameWindow::draw_left_cards(int num)
         lbl_left_cards[i] = new QLabel(this);
         lbl_left_cards[i]->setGeometry(10, 10 + 20 * i, card_width / 2, card_height / 2);
         QPixmap bgpx(tr(":/new/card/resources/back.png"));
+        bgpx = bgpx.scaledToWidth(card_width / 2);
         lbl_left_cards[i]->setPixmap(bgpx);
         lbl_left_cards[i]->show();
     }
@@ -312,6 +315,7 @@ void GameWindow::draw_right_cards(int num)
         lbl_right_cards[i] = new QLabel(this);
         lbl_right_cards[i]->setGeometry(1140, 10 + 20 * i, card_width / 2, card_height / 2);
         QPixmap bgpx(tr(":/new/card/resources/back.png"));
+        bgpx = bgpx.scaledToWidth(card_width / 2);
         lbl_right_cards[i]->setPixmap(bgpx);
         lbl_right_cards[i]->show();
     }
@@ -442,8 +446,9 @@ void GameWindow::show_last_cards()
          it != last_estab.end(); ++it, ++i) {
         lbl_last_estab[i] = new QLabel(this);
         QPixmap pxmap(QPixmap(tr((":/new/card/resources/" + get_cardname(*it) + ".png").c_str())));
+        pxmap = pxmap.scaledToWidth(card_width / 1.2);
         lbl_last_estab[i]->setPixmap(pxmap);
-        lbl_last_estab[i]->setGeometry(200 + 40 * i, 210, card_width / 1.2, card_height / 1.2);
+        lbl_last_estab[i]->setGeometry(350 + 40 * i, 210, card_width / 1.2, card_height / 1.2);
         lbl_last_estab[i]->show();
     }
 }
