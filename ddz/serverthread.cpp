@@ -1,10 +1,11 @@
 #include "serverthread.h"
 #include "tcpmsg.h"
 
+int port = PORT;
 serverthread::serverthread()
 {
     server = new QTcpServer(this);
-    server->listen(QHostAddress::Any, PORT);
+    server->listen(QHostAddress::Any, port);
     printf("server ready\n");
     connect(server, SIGNAL(newConnection()), this, SLOT(accept()));
 }
@@ -165,9 +166,8 @@ void serverthread::run()
             else send(socks[i], FAIL);
         }
     }
-    for (int i = 0; i < 3; i++) {
-        socks[i]->close();
-    }
+    printf("win/lose broadcasted\n");
+    //delete game;
+    sleepcp(2000);
     printf("server: goodbye\n\n");
-    delete game;
 }

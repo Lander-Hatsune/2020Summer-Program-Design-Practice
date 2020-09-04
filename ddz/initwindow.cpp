@@ -1,6 +1,8 @@
 #include "initwindow.h"
 #include "ui_initwindow.h"
 
+extern int port;
+
 InitWindow::InitWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::InitWindow)
@@ -34,7 +36,7 @@ void InitWindow::on_b_join_clicked()
             ip = QString::fromStdString("127.0.0.1");
         }
     }
-    GameWindow* gamewindow = new GameWindow(nullptr, ip, PORT);
+    GameWindow* gamewindow = new GameWindow(nullptr, ip, port);
     connect(gamewindow, SIGNAL(restart(bool)), this, SLOT(deal_restart(bool)));
     this->hide();
     gamewindow->show();
@@ -42,13 +44,13 @@ void InitWindow::on_b_join_clicked()
 
 void InitWindow::deal_restart(bool ishost)
 {
-    /*
+    port += 1;
     if (ishost) {
         on_b_create_clicked();
     }
     else {
         on_b_join_clicked();
     }
-    */
-    this->show();
+    printf("restart initwindow\n");
+    //this->show();
 }

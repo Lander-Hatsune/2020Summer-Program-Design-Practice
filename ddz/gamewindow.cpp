@@ -195,10 +195,12 @@ void GameWindow::deal_msg()
         box.setStandardButtons(QMessageBox::Yes | QMessageBox::Close);
         int ret = box.exec();
         sock->close();
+        printf("%d sock closed\n", number);
         if (ret == QMessageBox::Yes) {
             emit restart(number == 0);
         }
         this->deleteLater();
+        return;
     }
     else if (head == SUCC) {
         QMessageBox box(this);
@@ -206,10 +208,12 @@ void GameWindow::deal_msg()
         box.setStandardButtons(QMessageBox::Yes | QMessageBox::Close);
         int ret = box.exec();
         sock->close();
+        printf("%d sock closed\n", number);
         if (ret == QMessageBox::Yes) {
             emit restart(number == 0);
         }
         this->deleteLater();
+        return;
     }
 
     if (sock->bytesAvailable() > 0) {
