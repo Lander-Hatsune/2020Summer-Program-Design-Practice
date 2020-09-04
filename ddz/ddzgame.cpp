@@ -485,3 +485,9 @@ void ddzgame::establish(int num, set<card> cards) {
         player_cards[num].erase(*it);
     }
 }
+
+void ddzgame::set_lord(int num) {
+    for (int i = 0; i < 3; i++) {
+        player_cards[num].insert(lord_s[i]);
+    }
+}

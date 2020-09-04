@@ -34,6 +34,7 @@ signals:
     void wait_dz(string);
     void get_dz(string);
     void is_valid();
+    void restart(bool);
 
 private slots:
     void deal_msg();

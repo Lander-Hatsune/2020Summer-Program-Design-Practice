@@ -77,6 +77,7 @@ void serverthread::run()
         cur_lord_to_judge += 1;
         cur_lord_to_judge %= 3;
     }
+    game->set_lord(lord);
     for (int i = 0; i < 3; i++) {
         send(socks[i], DZ + to_string(lord));
     }
@@ -87,6 +88,7 @@ void serverthread::run()
     int cur_player = lord;
     int winner = 3;
     while (true) {
+        sleepcp(300);
         string sizes = "";
         for (int i = 0; i < 3; i++) {
             sizes += to_string(game->player_cards[i].size());
@@ -105,11 +107,15 @@ void serverthread::run()
                     to_string(cur_player) + ":" + last_estab_str << endl;
         }
         send(socks[cur_player], UR_TURN);
+
         cout << "server send to " << cur_player << " " << UR_TURN << endl;
-        socks[cur_player]->waitForReadyRead(-1);
+        cout << "server recv success: "
+             << socks[cur_player]->waitForReadyRead(-1)
+             << endl;
+
         string ans = recv(socks[cur_player]);
         cout << "server recv ans: " << ans << endl;
-        if (ans[0] == '0') {
+        if (ans == "0:0") {
             ;
         }
         else {
@@ -138,4 +144,7 @@ void serverthread::run()
             else send(socks[i], FAIL);
         }
     }
+    socks[0]->waitForReadyRead(-1);
+    printf("server: goodbye\n");
+    server->close();
 }

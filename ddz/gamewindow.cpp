@@ -80,7 +80,7 @@ void GameWindow::deal_msg()
         }
         lbl_state[number]->setGeometry(580, 460, 100, 50);
         lbl_state[(number + 1) % 3]->setGeometry(1000, 300, 200, 50);
-        lbl_state[(number + 2) % 3]->setGeometry(200, 300, 200, 50);
+        lbl_state[(number + 2) % 3]->setGeometry(150, 300, 200, 50);
     }
     else if (head == STT) {
         ui->lbl_self->setText(QString::fromStdString("No." + to_string(number)));
@@ -173,6 +173,13 @@ void GameWindow::deal_msg()
             else indicator[i]->setText(QString::fromStdString("No." + to_string(i)));
         }
 
+        lbl_state[last_player]->hide();
+        lbl_state[cur_player]->hide();
+        for (int i = (last_player + 1) % 3; i != cur_player; i = (i + 1) % 3) {
+            lbl_state[i]->setText("不出");
+            lbl_state[i]->show();
+        }
+
     }
     else if (head == UR_TURN) {
         if (number == last_player) {
@@ -187,21 +194,30 @@ void GameWindow::deal_msg()
         box.setText("你输了,继续游戏?");
         box.setStandardButtons(QMessageBox::Yes | QMessageBox::Close);
         int ret = box.exec();
-        if (ret == QMessageBox::Yes) {
-
+        if (number == 0) {
+            send(sock, (string)"goodbye");
         }
-        else this->close();
+        sock->close();
+        if (ret == QMessageBox::Yes) {
+            emit restart(number == 0);
+        }
+        this->close();
     }
     else if (head == SUCC) {
         QMessageBox box(this);
         box.setText("你赢了,继续游戏?");
         box.setStandardButtons(QMessageBox::Yes | QMessageBox::Close);
         int ret = box.exec();
-        if (ret == QMessageBox::Yes) {
-
+        if (number == 0) {
+            send(sock, (string)"goodbye");
         }
-        else this->close();
+        sock->close();
+        if (ret == QMessageBox::Yes) {
+            emit restart(number == 0);
+        }
+        this->close();
     }
+
     if (sock->bytesAvailable() > 0) {
         //printf("left %d bytes\n", sock->bytesAvailable());
         deal_msg();
@@ -372,11 +388,11 @@ void GameWindow::on_b_notjudgelord_clicked()
 
 void GameWindow::on_b_establish_clicked()
 {
-    send(sock, ddzgame::get_str_from_cards(ready_estab) + ":" + to_string(my_cards.empty()));
     for (set<card>::iterator it = ready_estab.begin();
          it != ready_estab.end(); ++it) {
         my_cards.erase(*it);
     }
+    send(sock, ddzgame::get_str_from_cards(ready_estab) + ":" + to_string(my_cards.empty()));
     draw_my_cards(my_cards);
     ui->b_establish->hide();
     ui->b_pass->hide();
@@ -388,6 +404,8 @@ void GameWindow::on_b_pass_clicked()
     send(sock, (string)"0:0");
     ui->b_establish->hide();
     ui->b_pass->hide();
+    lbl_state[number]->setText("不出");
+    lbl_state[number]->show();
 }
 
 void GameWindow::judge_valid()
@@ -408,6 +426,7 @@ void GameWindow::judge_valid()
         ui->b_pass->setEnabled(true);
     }
 }
+
 
 void GameWindow::show_last_cards()
 {

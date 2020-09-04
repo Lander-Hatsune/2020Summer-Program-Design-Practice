@@ -22,7 +22,11 @@ private slots:
 
     void on_b_join_clicked();
 
+    void deal_restart(bool);
+
 private:
     Ui::InitWindow *ui;
+    serverthread*  svrthr;
+    QString ip;
 };
 #endif // INITWINDOW_H
