@@ -237,9 +237,10 @@ void GameWindow::draw_my_cards(set<card> cards)
 
     ui->lbl_waiting->setText("");
 
-    for (int i = 0; i < 25; i++) {
-        if (b_cards[i])
+    for (int i = 0; i < 20; i++) {
+        if (b_cards[i]) {
             b_cards[i]->hide();
+        }
     }
 
     int i = 0;
@@ -285,10 +286,11 @@ void GameWindow::draw_lord_cards()
 void GameWindow::draw_left_cards(int num)
 {
     printf("draw left cards: %d\n", num);
-    for (int i = 0; i < 25; i++) {
+    for (int i = 0; i < 20; i++) {
         if (lbl_left_cards[i]) {
             lbl_left_cards[i]->hide();
         }
+        //lbl_left_cards[i]->deleteLater();
     }
     for (int i = 0; i < num; i++) {
         lbl_left_cards[i] = new QLabel(this);
@@ -302,10 +304,11 @@ void GameWindow::draw_left_cards(int num)
 void GameWindow::draw_right_cards(int num)
 {
     printf("draw right cards: %d\n", num);
-    for (int i = 0; i < 25; i++) {
+    for (int i = 0; i < 20; i++) {
         if (lbl_right_cards[i]) {
             lbl_right_cards[i]->hide();
         }
+        //lbl_right_cards[i]->deleteLater();
     }
     for (int i = 0; i < num; i++) {
         lbl_right_cards[i] = new QLabel(this);
@@ -431,8 +434,10 @@ void GameWindow::judge_valid()
 void GameWindow::show_last_cards()
 {
     for (int i = 0; i < 25; i++) {
-        if (lbl_last_estab[i])
+        if (lbl_last_estab[i]) {
             lbl_last_estab[i]->hide();
+        }
+        //lbl_last_estab[i]->deleteLater();
     }
     int i = 0;
     for (set<card>::iterator it = last_estab.begin();

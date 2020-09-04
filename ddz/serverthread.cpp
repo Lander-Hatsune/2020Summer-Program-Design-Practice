@@ -145,6 +145,9 @@ void serverthread::run()
         }
     }
     socks[0]->waitForReadyRead(-1);
+    for (int i = 0; i < 3; i++) {
+        socks[i]->deleteLater();
+    }
     printf("server: goodbye\n");
     server->close();
 }
