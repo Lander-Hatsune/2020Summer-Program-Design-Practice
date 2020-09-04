@@ -194,28 +194,22 @@ void GameWindow::deal_msg()
         box.setText("你输了,继续游戏?");
         box.setStandardButtons(QMessageBox::Yes | QMessageBox::Close);
         int ret = box.exec();
-        if (number == 0) {
-            send(sock, (string)"goodbye");
-        }
         sock->close();
         if (ret == QMessageBox::Yes) {
             emit restart(number == 0);
         }
-        this->close();
+        this->deleteLater();
     }
     else if (head == SUCC) {
         QMessageBox box(this);
         box.setText("你赢了,继续游戏?");
         box.setStandardButtons(QMessageBox::Yes | QMessageBox::Close);
         int ret = box.exec();
-        if (number == 0) {
-            send(sock, (string)"goodbye");
-        }
         sock->close();
         if (ret == QMessageBox::Yes) {
             emit restart(number == 0);
         }
-        this->close();
+        this->deleteLater();
     }
 
     if (sock->bytesAvailable() > 0) {

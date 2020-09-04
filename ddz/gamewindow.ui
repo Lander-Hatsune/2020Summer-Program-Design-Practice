@@ -80,6 +80,9 @@
    <property name="text">
     <string>不出</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
   </widget>
   <widget class="QLabel" name="lbl_self">
    <property name="geometry">

@@ -3,7 +3,7 @@
 
 serverthread::serverthread()
 {
-    server = new QTcpServer();
+    server = new QTcpServer(this);
     server->listen(QHostAddress::Any, PORT);
     printf("server ready\n");
     connect(server, SIGNAL(newConnection()), this, SLOT(accept()));
@@ -61,11 +61,14 @@ void serverthread::run()
         cout << GET_DZ + cur_state << endl;
 
         string ans_str;
-        socks[cur_lord_to_judge]->waitForReadyRead(-1);
+        while (!socks[cur_lord_to_judge]->bytesAvailable()) {
+            sleepcp(20);
+        }
+        printf("server: got ans\n");
         ans_str = recv(socks[cur_lord_to_judge]);
 
         int ans = ans_str[0] - '0';
-        printf("server: got ans: %d\n", ans);
+        printf("server: ans: %d\n", ans);
         //int ans = 0;
         if (ans) {
             cur_state[cur_lord_to_judge] = '2';// want
@@ -76,6 +79,7 @@ void serverthread::run()
         }
         cur_lord_to_judge += 1;
         cur_lord_to_judge %= 3;
+        sleepcp(300);
     }
     game->set_lord(lord);
     for (int i = 0; i < 3; i++) {
@@ -88,7 +92,6 @@ void serverthread::run()
     int cur_player = lord;
     int winner = 3;
     while (true) {
-        sleepcp(300);
         string sizes = "";
         for (int i = 0; i < 3; i++) {
             sizes += to_string(game->player_cards[i].size());
@@ -109,10 +112,10 @@ void serverthread::run()
         send(socks[cur_player], UR_TURN);
 
         cout << "server send to " << cur_player << " " << UR_TURN << endl;
-        cout << "server recv success: "
-             << socks[cur_player]->waitForReadyRead(-1)
-             << endl;
-
+        while (!socks[cur_player]->bytesAvailable()) {
+            sleepcp(20);
+        }
+        printf("server: got ans\n");
         string ans = recv(socks[cur_player]);
         cout << "server recv ans: " << ans << endl;
         if (ans == "0:0") {
@@ -125,10 +128,28 @@ void serverthread::run()
             ans = ans.substr(ans.find(':') + 1);
             if (ans[0] == '1') {
                 winner = cur_player;
+
+                string sizes = "";
+                for (int i = 0; i < 3; i++) {
+                    sizes += to_string(game->player_cards[i].size());
+                    if (i != 2) sizes += ":";
+                }
+                for (int i = 0; i < 3; i++) {
+                    send(socks[i], NXT_RND + sizes + ":" +
+                         to_string(last_estab_player) + ":" +
+                         to_string(cur_player) + ":" + last_estab_str);
+
+                    cout << "server send to " << i << " " << NXT_RND + sizes + ":" +
+                            to_string(last_estab_player) + ":" +
+                            to_string(cur_player) + ":" + last_estab_str << endl;
+                }
+
+                sleepcp(1000);
                 break;
             }
         }
         (cur_player += 1) %= 3;
+        sleepcp(300);
     }
     if (lord == winner) {
         for (int i = 0; i < 3; i++) {
@@ -144,10 +165,9 @@ void serverthread::run()
             else send(socks[i], FAIL);
         }
     }
-    socks[0]->waitForReadyRead(-1);
     for (int i = 0; i < 3; i++) {
-        socks[i]->deleteLater();
+        socks[i]->close();
     }
-    printf("server: goodbye\n");
-    server->close();
+    printf("server: goodbye\n\n");
+    delete game;
 }

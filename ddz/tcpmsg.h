@@ -23,13 +23,13 @@ inline void sleepcp(int milliseconds)
 }
 
 inline void send(QTcpSocket* sock, string msg) {
-    printf("sent: ");
-    cout << msg + "*MK*" << endl;
-    sleepcp(100);
+    //sleepcp(100);
     sock->waitForBytesWritten(-1);
     sock->write((msg + "*MK*").c_str());
     sock->flush();
-    sleepcp(100);
+    printf("sent: ");
+    cout << msg + "*MK*" << endl;
+    //sleepcp(100);
 }
 
 inline void send(QTcpSocket* sock, QString msg) {

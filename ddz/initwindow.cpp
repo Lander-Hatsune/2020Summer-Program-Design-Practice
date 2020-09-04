@@ -17,7 +17,6 @@ InitWindow::~InitWindow()
 
 void InitWindow::on_b_create_clicked()
 {
-    if (svrthr) svrthr->deleteLater();
     svrthr = new serverthread();
     svrthr->start();
 
@@ -43,10 +42,13 @@ void InitWindow::on_b_join_clicked()
 
 void InitWindow::deal_restart(bool ishost)
 {
+    /*
     if (ishost) {
         on_b_create_clicked();
     }
     else {
         on_b_join_clicked();
     }
+    */
+    this->show();
 }

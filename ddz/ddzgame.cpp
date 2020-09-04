@@ -1,5 +1,6 @@
 #include "ddzgame.h"
 #include <iostream>
+#include <time.h>
 
 ddzgame::ddzgame() {
     srand(time(NULL));

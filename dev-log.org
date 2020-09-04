@@ -32,3 +32,12 @@
             }
         });
     #+end_src
+
+- segfault when waiting msg from socket ::
+  - do not use =waitforReadyRead()=, use
+    #+begin_src cpp
+    while (!socks[cur_player]->bytesAvailable()) {
+        sleepcp(20);
+    }
+    #+end_src
+
