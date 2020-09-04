@@ -121,178 +121,303 @@ bool ddzgame::greater(set<card> old_set, set<card> cur_set) {
         cur.insert((*it).val);
     }
     
+    printf("\n\n");
     if (cur.empty()) {// cur is empty
+        printf("game: cur is empty\n");
         return false;
     }
     // cur isnt empty
 
     if (old.empty() && !cur.empty()) {// old is empty
-        if (cur.size() == 2 && cur.count(16) && cur.count(17))// rocket
+        printf("game: old is empty\n");
+        if (cur.size() == 2 && cur.count(16) && cur.count(17)) {// rocket
+            printf("game: cur is rocket\n");
             return true;
+        }
 
-        if (cur.size() == 4 && has(cur, 4))// bomb
+        if (cur.size() == 4 && has(cur, 4)) {// bomb
+            printf("game: cur is bomb\n");
             return true;
+        }
 
-        if (cur.size() == 1)// single
+        if (cur.size() == 1) {// single
+            printf("game: cur is single\n");
             return true;
+        }
 
-        if (cur.size() == 2 && has(cur, 2))// dopio
+        if (cur.size() == 2 && has(cur, 2)) {// dopio
+            printf("game: cur is dopio\n");
             return true;
+        }
 
-        if (cur.size() == 3 && has(cur, 3))// 3 + 0
+        if (cur.size() == 3 && has(cur, 3)) {// 3 + 0
+            printf("game: cur is 3 + 0\n");
             return true;
+        }
 
-        if (cur.size() == 4 && has(cur, 3))// 3 + 1
+        if (cur.size() == 4 && has(cur, 3)) {// 3 + 1
+            printf("game: cur is 3 + 1\n");
             return true;
+        }
 
-        if (cur.size() == 5 && has(cur, 3) && has(cur, 2))// 3 + 2
+        if (cur.size() == 5 && has(cur, 3) && has(cur, 2)) {// 3 + 2
+            printf("game: cur is 3 + 2\n");
             return true;
+        }
 
-        if (cntinue(cur, 1) || cntinue(cur, 2))// shunzi + liandui
+        if (cntinue(cur, 1) || cntinue(cur, 2)) {// shunzi + liandui
+            printf("game: cur is shunzi or liandui\n");
             return true;
+        }
 
-        if (cur.size() == 6 && has(cur, 4))// 4 + 2 * 1
+        if (cur.size() == 6 && has(cur, 4)) {// 4 + 2 * 1
+            printf("game: cur is 4 + 2 * 1\n");
             return true;
+        }
 
-        if (cur.size() == 8 && has(cur, 4) && dopio(cur, 2))// 4 + 2 * 2
+        if (cur.size() == 8 && has(cur, 4) && dopio(cur, 2)) {// 4 + 2 * 2
+            printf("game: cur is 4 + 2 * 2\n");
             return true;
+        }
 
         if (jet_body(cur) &&
         (cur.size() == jet_body(cur) * 3 ||
          cur.size() == jet_body(cur) * 4 ||
-         cur.size() == jet_body(cur) * 5))// jet
+         cur.size() == jet_body(cur) * 5)) {// jet
+            printf("game: cur is jet\n");
             return true;
+        }
 
         return false;
     }
     // old isnt empty
 
     if (old.size() == 2 && old.count(16) && old.count(17)) {// old is rocket
+        printf("game: old is rocket\n");
         return false;
     }
     // old isnt rocket
 
     if (cur.size() == 2 && cur.count(16) && cur.count(17)) {// cur is rocket
+        printf("game: cur is rocket\n");
         return true;
     }
     // cur isnt rocket
     
     if (cur.size() == 4 && has(cur, 4)) {// cur is bomb
-        
+        printf("game: cur is bomb\n");
         if (old.size() == 4 && has(old, 4)) {// old is bomb
+            printf("game: old is bomb\n");
             if (*cur.begin() > *old.begin()) {
+                printf("game: cur is bigger bomb\n");
                 return true;
             }
-            else return false;// cur not bigger
+            else {
+                printf("game: cur is leq bomb\n");
+                return false;// cur not bigger
+            }
         }
-        else return true;// old isnt bomb
+        else {
+            printf("game: old isnt bomb\n");
+            return true;// old isnt bomb
+        }
         
     }
     // cur isnt bomb
+    printf("game: cur isnt bomb\n");
 
 
     if (old.size() == 4 && has(old, 4)) {// old is bomb
+        printf("game: old is bomb\n");
         if (cur.size() == 4 && has(cur, 4)) {// cur is bomb
+            printf("game: cur is bomb\n");
             if (*cur.begin() > *old.begin()) {
+                printf("game: cur is bigger bomb\n");
                 return true;
             }
-            else return false;// cur not bigger
+            else {
+                printf("game: cur is leq bomb\n");
+                return false;// cur not bigger
+            }
         }
-        else return false;// cur isnt bomb
+        else {
+            printf("game: cur isnt bomb\n");
+            return false;// cur isnt bomb
+        }
     }
+    printf("game: old isnt bomb\n");
     // old isnt bomb
 
     if (old.size() == 1) {// old is single
+        printf("game: old is single\n");
         if (cur.size() == 1) {// cur is single
+            printf("game: cur is single\n");
             if (*cur.begin() > *old.begin()) {// cur bigger
+                printf("game: cur bigger\n");
                 return true;
             }
-            else return false;
+            else {
+                printf("game: cur leq\n");
+                return false;
+            }
         }
-        else return false;// cur isnt single
+        else {
+            printf("game: cur isnt single\n");
+            return false;// cur isnt single
+        }
     }
     // old isnt single
+    printf("game: old isnt single\n");
 
     if (old.size() == 2 && has(old, 2)) {// old is dopio
+        printf("game: old is dopio\n");
         if (cur.size() == 2 && has(cur, 2)) {// cur is dopio
+            printf("game: cur is dopio\n");
             if (*cur.begin() > *old.begin()) {// cur bigger
+                printf("game: cur bigger\n");
                 return true;
             }
-            else return false;
+            else {
+                printf("game: cur leq\n");
+                return false;
+            }
         }
-        else return false;// cur isnt dopio
+        else {
+            printf("game: cur isnt dopio\n");
+            return false;// cur isnt dopio
+        }
     }
     // old isnt dopio
 
     if (old.size() >= 3 && old.size() <= 5 && has(old, 3)) {// old is 3 + 0, 1, 2
+        printf("game: old is 3 + 0, 1, 2\n");
         if (cur.size() == old.size() && has(cur, 3)) {// cur is 3 + 0, 1, 2
+            printf("game: cur is 3 + 0, 1, 2\n");
             if (has(cur, 3) > has(old, 3)) {// cur bigger
+                printf("game: cur bigger\n");
                 return true;
             }
-            else return false;
+            else {
+                printf("game: cur leq\n");
+                return false;
+            }
         }
-        else return false;// cur isnt 3 + 0, 1, 2
+        else {
+            printf("game: cur isnt 3 + 0, 1, 2\n");
+            return false;// cur isnt 3 + 0, 1, 2
+        }
     }
     //old isnt 3 + 0, 1, 2
+    printf("game: old isnt 3 + 0, 1, 2\n");
 
     if (old.size() >= 5 && old.size() <= 12 && cntinue(old, 1)) {// old is shunzi 5 ~ 12
+        printf("game: old is shunzi 5 ~ 12\n");
         if (cur.size() == old.size() && cntinue(cur, 1)) {// cur is shunzi 5 ~ 12
+            printf("game: cur is shunzi 5 ~ 12\n");
             if (*cur.begin() > *old.begin()) {// cur is bigger
+                printf("game: cur bigger\n");
                 return true;
             }
-            else return false;
+            else {
+                printf("game: cur leq\n");
+                return false;
+            }
         }
-        else return false;// cur isnt shunzi 5 ~ 12
+        else {
+            printf("game: cur isnt shunzi 5 ~ 12\n");
+            return false;// cur isnt shunzi 5 ~ 12
+        }
     }
+    printf("game: old isnt shunzi 5 ~ 12\n");
     // old isnt shunzi 5 ~ 12
 
     if (old.size() >= 6 && old.size() <= 20 && cntinue(old, 2)) {// old is liandui 6 ~ 20
+        printf("game: old is liandui 6 ~ 20\n");
         if (cur.size() == old.size() && cntinue(cur, 2)) {// cur is liandui 6 ~ 20
+            printf("game: cur is liandui 6 ~ 20\n");
             if (*cur.begin() > *old.begin()) {// cur is bigger
+                printf("game: cur bigger\n");
                 return true;
             }
-            else return false;
+            else {
+                printf("game: cur leq\n");
+                return false;
+            }
         }
-        else return false;// cur isnt liandui 6 ~ 20
+        else {
+            printf("game: cur isnt liandui 6 ~ 20\n");
+            return false;// cur isnt liandui 6 ~ 20
+        }
     }
+    printf("game: old isnt liandui 6 ~ 20\n");
     // old isnt liandui 6 ~ 20
 
     if (old.size() == 6 && has(old, 4)) {// old is 4 + 2 * 1
+        printf("game: old is 4 + 2 * 1\n");
         if (cur.size() == 6 && has(cur, 4)) {// cur is 4 + 2 * 1
+            printf("game: cur is 4 + 2 * 1\n");
             if (has(cur, 4) > has(old, 4)) {
+                printf("game: cur bigger\n");
                 return true;
             }
-            else return false;
+            else {
+                printf("game: cur leq\n");
+                return false;
+            }
         }
-        else return false;
+        else {
+            printf("game: cur isnt 4 + 2 * 1\n");
+            return false;
+        }
     }
+    printf("game: old isnt 4 + 2 * 1\n");
     // old isnt 4 + 2 * 1
 
     if (old.size() == 8 && has(old, 4) && dopio(old, 2)) {// old is 4 + 2 * 2
+        printf("game: old is 4 + 2 * 2\n");
         if (cur.size() == 8 && has(cur, 4) && dopio(cur, 2)) {// cur is 4 + 2 * 2
+            printf("game: cur is 4 + 2 * 2\n");
             if (has(cur, 4) > has(old, 4)) {
+                printf("game: cur bigger\n");
                 return true;
             }
-            else return false;
+            else {
+                printf("game: cur leq\n");
+                return false;
+            }
         }
-        else return false;
+        else {
+            printf("game: cur isnt 4 + 2 * 2\n");
+            return false;
+        }
     }
+    printf("game: old isnt 4 + 2 * 2\n");
     // old isnt 4 + 2 * 2
 
     if (jet_body(old) &&
         (old.size() == jet_body(old) * 3 ||
          old.size() == jet_body(old) * 4 ||
          old.size() == jet_body(old) * 5)) {// old is jet
+        printf("game: old is jet\n");
         if (jet_body(cur) == jet_body(old) && cur.size() == old.size()) {// cur is jet
+            printf("game: cur is jet\n");
             if (jet_val(cur) > jet_val(old)) {
+                printf("game: cur bigger\n");                
                 return true;
             }
-            else return false;
+            else {
+                printf("game: cur leq\n");
+                return false;
+            }
         }
-        else return false;
+        else {
+            printf("game: cur isnt jet\n");            
+            return false;
+        }
     }
+    printf("game: old isnt jet\n");
     
-    printf("FUCK\n");
+    printf("game: FUCK!\n");
     return false;
 }
 
@@ -337,4 +462,11 @@ set<card> ddzgame::get_cards_from_str(string msg) {
         cards.insert((cur));
     }
     return cards;
+}
+
+void ddzgame::establish(int num, set<card> cards) {
+    for (set<card>::iterator it = cards.begin();
+         it != cards.end(); ++it) {
+        player_cards[num].erase(*it);
+    }
 }

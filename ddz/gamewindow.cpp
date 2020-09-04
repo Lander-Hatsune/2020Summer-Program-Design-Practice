@@ -81,14 +81,14 @@ void GameWindow::deal_msg()
         lbl_state[number]->setGeometry(580, 460, 100, 50);
         lbl_state[(number + 1) % 3]->setGeometry(1000, 300, 200, 50);
         lbl_state[(number + 2) % 3]->setGeometry(200, 300, 200, 50);
+    }
+    else if (head == STT) {
         ui->lbl_self->setText(QString::fromStdString("No." + to_string(number)));
         ui->lbl_left->setText(QString::fromStdString("No." + to_string((number + 2) % 3)));
         ui->lbl_right->setText(QString::fromStdString("No." + to_string((number + 1) % 3)));
         indicator[number] = ui->lbl_self;
         indicator[(number + 2) % 3] = ui->lbl_left;
         indicator[(number + 1) % 3] = ui->lbl_right;
-    }
-    else if (head == STT) {
         for (int i = 0; i < 34; i += 2) {
             card cur;
             cur.color = msg[i] - '0';
@@ -164,6 +164,13 @@ void GameWindow::deal_msg()
         msg = msg.substr(msg.find(':') + 1);
         last_estab = ddzgame::get_cards_from_str(msg);
         show_last_cards();
+
+        for (int i = 0; i < 3; i++) {
+            if (cur_player == i) {
+                indicator[i]->setText(QString::fromStdString("(出牌中)No." + to_string(i)));
+            }
+            else indicator[i]->setText(QString::fromStdString("No." + to_string(i)));
+        }
 
     }
     else if (head == UR_TURN) {
@@ -257,6 +264,7 @@ void GameWindow::draw_lord_cards()
 
 void GameWindow::draw_left_cards(int num)
 {
+    printf("draw left cards: %d\n", num);
     for (int i = 0; i < 25; i++) {
         if (lbl_left_cards[i]) {
             lbl_left_cards[i]->hide();
@@ -273,6 +281,7 @@ void GameWindow::draw_left_cards(int num)
 
 void GameWindow::draw_right_cards(int num)
 {
+    printf("draw right cards: %d\n", num);
     for (int i = 0; i < 25; i++) {
         if (lbl_right_cards[i]) {
             lbl_right_cards[i]->hide();
@@ -329,7 +338,6 @@ void GameWindow::deal_get_dz(string state)
 
 void GameWindow::on_b_judgelord_clicked()
 {
-    send(sock, (string)"1");
     if (is_rob) {
         lbl_state[number]->setText("抢地主!");
     }
@@ -339,15 +347,16 @@ void GameWindow::on_b_judgelord_clicked()
     lbl_state[number]->show();
     ui->b_judgelord->hide();
     ui->b_notjudgelord->hide();
+    send(sock, (string)"1");
 }
 
 void GameWindow::on_b_notjudgelord_clicked()
 {
-    send(sock, (string)"0");
     lbl_state[number]->setText("不叫");
     lbl_state[number]->show();
     ui->b_judgelord->hide();
     ui->b_notjudgelord->hide();
+    send(sock, (string)"0");
 }
 
 void GameWindow::on_b_establish_clicked()
@@ -365,6 +374,8 @@ void GameWindow::on_b_establish_clicked()
 void GameWindow::on_b_pass_clicked()
 {
     send(sock, (string)"0");
+    ui->b_establish->hide();
+    ui->b_pass->hide();
 }
 
 void GameWindow::judge_valid()

@@ -33,4 +33,5 @@ public:
     string get_lord_cards();
     static string get_str_from_cards(set<card>);
     static set<card> get_cards_from_str(string cards);
+    void establish(int num, set<card> cards);
 };

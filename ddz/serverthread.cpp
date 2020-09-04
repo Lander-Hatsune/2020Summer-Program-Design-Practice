@@ -76,7 +76,7 @@ void serverthread::run()
 
     // start
     last_estab.clear();
-    last_player = lord;
+    last_estab_player = lord;
     int cur_player = lord;
     int winner = 3;
     while (true) {
@@ -88,18 +88,25 @@ void serverthread::run()
         string last_estab_str = ddzgame::get_str_from_cards(last_estab);
         for (int i = 0; i < 3; i++) {
             send(socks[i], NXT_RND + sizes + ":" +
-                 to_string(last_player) + ":" +
+                 to_string(last_estab_player) + ":" +
                  to_string(cur_player) + ":" + last_estab_str);
+
+            cout << "server send to " << i << " " << NXT_RND + sizes + ":" +
+                    to_string(last_estab_player) + ":" +
+                    to_string(cur_player) + ":" + last_estab_str << endl;
         }
         send(socks[cur_player], UR_TURN);
+        cout << "server send to " << cur_player << " " << UR_TURN << endl;
         socks[cur_player]->waitForReadyRead(-1);
         string ans = recv(socks[cur_player]);
-        if (ans == "0") {
+        cout << "server recv ans: " << ans << endl;
+        if (ans[0] == '0') {
             ;
         }
         else {
-            last_player = cur_player;
+            last_estab_player = cur_player;
             last_estab = ddzgame::get_cards_from_str(ans.substr(0, ans.find(":")));
+            game->establish(last_estab_player, last_estab);
             ans = ans.substr(ans.find(':') + 1);
             if (ans[0] == '1') {
                 winner = cur_player;
@@ -108,9 +115,9 @@ void serverthread::run()
         }
         (cur_player += 1) %= 3;
     }
-    if (lord == cur_player) {
+    if (lord == winner) {
         for (int i = 0; i < 3; i++) {
-            if (i != cur_player)
+            if (i != winner)
                 send(socks[i], FAIL);
             else send(socks[i], SUCC);
         }

@@ -23,9 +23,8 @@ inline void sleepcp(int milliseconds)
 }
 
 inline void send(QTcpSocket* sock, string msg) {
-    printf("sent: ");
-    cout << msg + "*MK*" << endl;
-    //sleepcp(1000);
+    //printf("sent: ");
+    //cout << msg + "*MK*" << endl;
     sock->write((msg + "*MK*").c_str());
     sock->flush();
 }
@@ -42,8 +41,8 @@ inline string recv(QTcpSocket* sock) {
         //printf("partial ret: ");
         //cout << ret << endl;
         if (ret.length() >= 4 && ret.substr(ret.length() - 4) == "*MK*") {
-            printf("recv: ");
-            cout << ret << endl;
+            //printf("recv: ");
+            //cout << ret << endl;
             return ret.substr(0, ret.length() - 4);
         }
     }

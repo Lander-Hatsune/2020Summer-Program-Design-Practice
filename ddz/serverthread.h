@@ -22,7 +22,7 @@ private:
     ddzgame* game;
 
     set<card> last_estab;
-    int last_player;
+    int last_estab_player;
 };
 
 #endif // SERVERTHREAD_H
