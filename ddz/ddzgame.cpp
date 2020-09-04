@@ -49,12 +49,13 @@ bool cntinue(multiset<int> cards, int times) {
     int curval = *cards.begin();
 
     if (times == 1) {
-        if (cards.count(15))
+        if (cards.count(15) || cards.size() < 5 || cards.size() > 12)
             return false;
     }
     
     if (times == 2) {
-        if (cards.count(13) || cards.count(14) || cards.count(15))
+        if (cards.count(13) || cards.count(14) || cards.count(15) ||
+            cards.size() < 6 || cards.size() > 20)
             return false;
     }
     
@@ -70,10 +71,12 @@ bool cntinue(multiset<int> cards, int times) {
             if (times == 1) {
                 if (continuous >= 5)
                     return true;
+                else return false;
             }
             else if (times == 2) {
                 if (continuous >= 3 && continuous <= 10)
                     return true;
+                else return false;
             }
         }
         else return false;
@@ -121,7 +124,7 @@ bool ddzgame::greater(set<card> old_set, set<card> cur_set) {
         cur.insert((*it).val);
     }
     
-    printf("\n\n");
+    printf("\n");
     if (cur.empty()) {// cur is empty
         printf("game: cur is empty\n");
         return false;
@@ -134,51 +137,61 @@ bool ddzgame::greater(set<card> old_set, set<card> cur_set) {
             printf("game: cur is rocket\n");
             return true;
         }
+        printf("game: cur isnt rocket\n");
 
         if (cur.size() == 4 && has(cur, 4)) {// bomb
             printf("game: cur is bomb\n");
             return true;
         }
+        printf("game: cur isnt bomb\n");
 
         if (cur.size() == 1) {// single
             printf("game: cur is single\n");
             return true;
         }
+        printf("game: cur isnt single\n");        
 
         if (cur.size() == 2 && has(cur, 2)) {// dopio
             printf("game: cur is dopio\n");
             return true;
         }
+        printf("game: cur isnt dopio\n");        
 
         if (cur.size() == 3 && has(cur, 3)) {// 3 + 0
             printf("game: cur is 3 + 0\n");
             return true;
         }
+        printf("game: cur isnt 3 + 0\n");
 
         if (cur.size() == 4 && has(cur, 3)) {// 3 + 1
             printf("game: cur is 3 + 1\n");
             return true;
         }
+        printf("game: cur isnt 3 + 1\n");
 
         if (cur.size() == 5 && has(cur, 3) && has(cur, 2)) {// 3 + 2
             printf("game: cur is 3 + 2\n");
             return true;
         }
+        printf("game: cur isnt 3 + 2\n");
 
         if (cntinue(cur, 1) || cntinue(cur, 2)) {// shunzi + liandui
             printf("game: cur is shunzi or liandui\n");
             return true;
         }
+        printf("game: cur isnt shunzi or liandui\n");
 
         if (cur.size() == 6 && has(cur, 4)) {// 4 + 2 * 1
             printf("game: cur is 4 + 2 * 1\n");
             return true;
         }
+        printf("game: cur isnt 4 + 2 * 1\n");
 
         if (cur.size() == 8 && has(cur, 4) && dopio(cur, 2)) {// 4 + 2 * 2
             printf("game: cur is 4 + 2 * 2\n");
             return true;
         }
+        printf("game: cur isnt 4 + 2 * 2\n");
 
         if (jet_body(cur) &&
         (cur.size() == jet_body(cur) * 3 ||
@@ -187,7 +200,9 @@ bool ddzgame::greater(set<card> old_set, set<card> cur_set) {
             printf("game: cur is jet\n");
             return true;
         }
+        printf("game: cur isnt jet\n");
 
+        printf("game: cur is nothing\n");
         return false;
     }
     // old isnt empty

@@ -41,31 +41,38 @@ void serverthread::run()
 
     // judge the lord
     srand(time(NULL));
-    int cur_lord_to_judge = 1;
+    int cur_lord_to_judge = rand() % 3;
     int lord = cur_lord_to_judge;
     string cur_state = "000";
     for (int i = 0; i < 3; i++) {
-        cur_state[cur_lord_to_judge] = '1';
+        cur_state[cur_lord_to_judge] = '1';// judging
         printf("server: cur lord to judge: %d\n", cur_lord_to_judge);
         for (int j = 0; j < 3; j++) {
             if (j == cur_lord_to_judge)
                 continue;
             send(socks[j], WAIT_DZ + cur_state);
+
+            printf("server: send to %d: ", j);
+            cout << WAIT_DZ + cur_state << endl;
         }
         send(socks[cur_lord_to_judge], GET_DZ + cur_state);
+
+        printf("server: send to %d: ", cur_lord_to_judge);
+        cout << GET_DZ + cur_state << endl;
+
         string ans_str;
         socks[cur_lord_to_judge]->waitForReadyRead(-1);
         ans_str = recv(socks[cur_lord_to_judge]);
 
         int ans = ans_str[0] - '0';
-        printf("got ans: %d\n", ans);
+        printf("server: got ans: %d\n", ans);
         //int ans = 0;
         if (ans) {
-            cur_state[cur_lord_to_judge] = '2';
+            cur_state[cur_lord_to_judge] = '2';// want
             lord = cur_lord_to_judge;
         }
         else {
-            cur_state[cur_lord_to_judge] = '3';
+            cur_state[cur_lord_to_judge] = '3';// dont want
         }
         cur_lord_to_judge += 1;
         cur_lord_to_judge %= 3;
@@ -85,6 +92,8 @@ void serverthread::run()
             sizes += to_string(game->player_cards[i].size());
             if (i != 2) sizes += ":";
         }
+        if (last_estab_player == cur_player)
+            last_estab.clear();
         string last_estab_str = ddzgame::get_str_from_cards(last_estab);
         for (int i = 0; i < 3; i++) {
             send(socks[i], NXT_RND + sizes + ":" +

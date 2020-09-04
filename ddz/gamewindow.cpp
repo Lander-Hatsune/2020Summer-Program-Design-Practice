@@ -163,9 +163,7 @@ void GameWindow::deal_msg()
         cur_player = msg[0] - '0';
         msg = msg.substr(msg.find(':') + 1);
         last_estab = ddzgame::get_cards_from_str(msg);
-        if (number == last_player) {
-            last_estab.clear();
-        }
+
         show_last_cards();
 
         for (int i = 0; i < 3; i++) {
@@ -177,6 +175,9 @@ void GameWindow::deal_msg()
 
     }
     else if (head == UR_TURN) {
+        if (number == last_player) {
+            last_estab.clear();
+        }
         ui->b_establish->show();
         ui->b_pass->show();
         judge_valid();
@@ -202,7 +203,7 @@ void GameWindow::deal_msg()
         else this->close();
     }
     if (sock->bytesAvailable() > 0) {
-        printf("left %d bytes\n", sock->bytesAvailable());
+        //printf("left %d bytes\n", sock->bytesAvailable());
         deal_msg();
     }
 }
@@ -301,13 +302,20 @@ void GameWindow::draw_right_cards(int num)
 
 void GameWindow::deal_wait_dz(string state)
 {
+    is_rob = false;
     for (int i = 0; i < 3; i++) {
         if (state[i] == '1') {
             lbl_state[i]->setText("叫地主中...");
             lbl_state[i]->show();
         }
         else if (state[i] == '2') {
-            lbl_state[i]->setText("叫地主!");
+            if (is_rob) {
+                lbl_state[i]->setText("抢地主!");
+            }
+            else {
+                lbl_state[i]->setText("叫地主!");
+            }
+            is_rob = true;
             lbl_state[i]->show();
         }
         else if (state[i] == '3') {
@@ -372,18 +380,19 @@ void GameWindow::on_b_establish_clicked()
     draw_my_cards(my_cards);
     ui->b_establish->hide();
     ui->b_pass->hide();
+    ready_estab.clear();
 }
 
 void GameWindow::on_b_pass_clicked()
 {
-    send(sock, (string)"0");
+    send(sock, (string)"0:0");
     ui->b_establish->hide();
     ui->b_pass->hide();
 }
 
 void GameWindow::judge_valid()
 {
-    cout << "--judge valid--:" << endl;
+    cout << "\n\n--judge valid--:" << endl;
     cout << "ready_estab: " << ddzgame::get_str_from_cards(ready_estab) << endl;
     cout << "last_estab: " << ddzgame::get_str_from_cards(last_estab) << endl;
     if (ddzgame::greater(last_estab, ready_estab)) {
