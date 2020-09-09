@@ -1,0 +1,42 @@
+{% load static %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="author" content="LanderX">
+    <title>{{title}}-Emitm电影网:让生活遇见电影</title>
+  </head>
+  <body>
+    <h1><center>{{title}}</center></h1>
+
+    <center>
+      <img src="/static/movielist/{{title}}.png"
+           alt="暂无图片">
+    </center>
+
+    <h2>影片简介</h2>
+    <p>{{intro}}</p>
+
+    <h2>演职员表</h2>
+    <ul>
+      {% for actor in actors %}
+      <li>
+        <a href="../actor/{{actor}}">
+          <img src="/static/movielist/actor/{{actor}}.png"
+               alt="暂无照片">
+        </a>
+        <a href="../actor/{{actor}}">{{actor}}</a>
+      </li>
+      {% endfor %}
+    </ul>
+
+    <h2>影评</h2>
+    <ul>
+      {% for comment in comments %}
+      <li>{{comment}}</li>
+      {% endfor %}
+    </ul>
+    
+    <h1><center>end</center></h1>
+    <center><a href="/1">返回首页</a></center>
+  </body>
+</html>

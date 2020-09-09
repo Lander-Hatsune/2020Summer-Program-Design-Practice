@@ -1,0 +1,34 @@
+{% load static %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="author" content="LanderX">
+    <title>演员列表-Emitm电影网:让生活遇见电影</title>
+  </head>
+  <body>
+    <h1><center>演员列表</center></h1>
+
+    {% if actor_names %}
+    <ul>
+      {% for name in actor_names %}
+      <li><a href="/actor/{{name}}"><img src="/static/movielist/actor/{{name}}.png"
+                                            alt="暂无图片"></a>
+      <a href="/actor/{{name}}">{{name}}</a></li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    <h2><center>页面跳转</center></h2>
+    <p><center>
+      <a href="/1">第一页</a>
+      ...
+      {% for page in pages %}
+      <a href="/{{page}}">{{page}}</a>
+      {% endfor %}
+      ...
+      <a href="/240">尾页</a>
+    </center></p>
+    
+    <h1><center>end</center></h1>
+  </body>
+</html>

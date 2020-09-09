@@ -1,0 +1,35 @@
+{% load static %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="author" content="LanderX">
+    <title>{{searchstring}}Emitm电影网:让生活遇见电影</title>
+  </head>
+  <body>
+    <h1>搜索结果</h1>
+    <strong>共找到:{{cnt}}条结果, </strong>
+    <strong>耗时:{{costtime}}s</strong>
+    <center><a href="/searchpage">搜索</a></center>
+    <ul>
+      {% for item in ans %}
+      <li>
+        <a href="{{item.2}}">{{item.0}}</a><br>
+        <a href="{{item.2}}"><img src="{{item.1}}" alt="暂无图片"></a>
+      </li>
+      {% endfor %}
+    </ul>
+
+    <h2><center>页面跳转</center></h2>
+    <p><center>
+      <a href="/1">第一页</a>
+      ...
+      {% for page in pages %}
+      <a href="/s/{{page}}">{{page}}</a>
+      {% endfor %}
+      ...
+      <a href="/{{total}}">尾页</a>
+    </center></p>
+    
+    <h1><center>end</center></h1>
+  </body>
+</html>

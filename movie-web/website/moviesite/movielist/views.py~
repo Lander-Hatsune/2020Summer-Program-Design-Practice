@@ -1,3 +1,53 @@
 from django.shortcuts import render
+from django.http import HttpResponse
+
+import json
 
 # Create your views here.
+
+movies = json.loads(open('./data/jsons/movies.json').read())
+actors = json.loads(open('./data/jsons/actors.json').read())
+
+movie_titles = list(movies.keys())
+actor_names = list(actors.keys())
+
+
+def index(request, page=1):
+    pages = filter(lambda x: x > 0 and x < 52, list(range(page - 2, page + 3)))
+    context = {
+        'movies': movie_titles[(page - 1) * 20:page * 20],
+        'pages': pages,
+    }
+    return render(request, 'movielist/index.html', context)
+
+
+def info(request, title):
+    context = {
+        'title': title,
+        'actors': movies[title]['actors'],
+        'intro': movies[title]['intro'],
+        'comments': movies[title]['comments'],
+    }
+    return render(request, 'movielist/infopage.html', context)
+
+def actorinfo(request, name):
+    name = name
+    intro = actors[name]['intro']
+    acted = actors[name]['acted']
+    cooperated = sorted(actors[name]['coop'].items(), key=lambda x: x[1])[:10]
+    context = {
+        'name': name,
+        'intro': intro,
+        'acted': acted,
+        'cooperated': cooperated,
+    }
+    return render(request, 'movielist/actorinfopage.html', context)
+
+def actorindex(request, page=1):
+    pages = filter(lambda x: x > 0 and x < 241, list(range(page - 2, page + 3)))
+    print(actor_names[(page - 1) * 20:page * 20])
+    context = {
+        'actor_names': actor_names[(page - 1) * 20:page * 20],
+        'pages': pages,
+    }
+    return render(request, 'movielist/actorindex.html', context)
