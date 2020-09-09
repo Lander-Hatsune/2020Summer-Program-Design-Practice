@@ -7,9 +7,9 @@
   </head>
   <body>
     <h1><center>搜索</center></h1>
-    <center><a href="/">回到电影列表</a></center>
-    <center><a href="/actor/">回到演员列表</a></center>
-    <br><br>
+    <center><a href="/">电影列表</a></center>
+    <center><a href="/actor/">演员列表</a></center>
+    <br><br><br><br>
     <form action="/s" method="get"><center>
       <input type="radio" name="c" value="movie" id="1">
       <label for="1">搜索电影</label>
@@ -18,9 +18,9 @@
       <input type="radio" name="c" value="comment" id="3">
       <label for="3">搜索影评</label>
       <br>
-      <input type="text" name="q">
-      <input type="submit" value="搜索">
+      <input type="text" name="q" style="height:40px;width:400px"
+             maxlength="20">
+      <input type="submit" value="搜索" style="height:40px;width:100px">
     </center></form>
-    <h1><center>end</center></h1>
   </body>
 </html>

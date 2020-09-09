@@ -9,6 +9,9 @@ urlpatterns = [
     path(r"searchpage/", views.searchpage, name='searchpage'),
     path(r"s/", views.search, name='search'),
     path(r"s/<int:page>", views.search, name='search'),
+    path(r"s/<int:page>/", views.search, name='search'),
+    path(r"turnto/", views.turnto, name='turn'),
+    path(r"actorturnto/", views.actorturnto, name='actorturn'),
     path(r'<int:page>/', views.index, name='index'),
     path(r"<str:title>/", views.info, name='info'),
 ]

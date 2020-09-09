@@ -8,14 +8,29 @@
   <body>
     <h1><center>演员列表</center></h1>
     <center><a href="/searchpage">搜索</a></center>
+    <center><a href="/">电影列表</a></center>
+    <br><br>
+    <center><strong>共有{{tot}}位演员</strong></center>
     {% if actor_names %}
-    <ul>
-      {% for name in actor_names %}
-      <li><a href="/actor/{{name}}"><img src="/static/movielist/actor/{{name}}.png"
-                                            alt="暂无图片"></a>
-      <a href="/actor/{{name}}">{{name}}</a></li>
+    <center>
+    <table border="1">
+      <tr>
+        {% for name in actor_names %}
+        {% if forloop.counter0 == 5 or forloop.counter0 == 10 or forloop.counter0 == 15 %}
+      </tr><tr>
+        {% endif %}
+        <td>
+          <center>
+            <a href="/actor/{{name}}"><img src="/static/movielist/actor/{{name}}.png"
+                                            alt="暂无图片"></a><br>
+            <a href="/actor/{{name}}">{{name}}</a>
+          </center>
+      </td>
       {% endfor %}
-    </ul>
+      </tr>
+    </table>
+    </center>
+
     {% endif %}
 
     <h2><center>页面跳转</center></h2>
@@ -26,10 +41,17 @@
       <a href="../actor/{{page}}">{{page}}</a>
       {% endfor %}
       ...
-      <a href="../actor/240">尾页</a>
+      <a href="../actor/239">尾页</a>
     </center></p>
+
+    <form action="/actorturnto" method="get"><center>
+        <input type="text" name="p" style="height:38px;width:50px">
+        <input type="submit" value="转至" style="height:40px;width:40px">
+    </center></form>
+
     
     <h1><center>end</center></h1>
-    <center><a href="/1">电影列表</a></center>
+    <center><a href="/searchpage">搜索</a></center>
+    <center><a href="/">电影列表</a></center>
   </body>
 </html>

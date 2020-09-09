@@ -7,28 +7,41 @@
   </head>
   <body>
     <h1><center>演员列表</center></h1>
-
+    <center><a href="/searchpage">搜索</a></center>
     {% if actor_names %}
-    <ul>
-      {% for name in actor_names %}
-      <li><a href="/actor/{{name}}"><img src="/static/movielist/actor/{{name}}.png"
-                                            alt="暂无图片"></a>
-      <a href="/actor/{{name}}">{{name}}</a></li>
+    <center>
+    <table border="1">
+      <tr>
+        {% for name in actor_names %}
+        {% if forloop.counter0 == 5 or forloop.counter0 == 10 or forloop.counter0 == 15 %}
+      </tr><tr>
+        {% endif %}
+        <td>
+          <center>
+            <a href="/actor/{{name}}"><img src="/static/movielist/actor/{{name}}.png"
+                                            alt="暂无图片"></a><br>
+            <a href="/actor/{{name}}">{{name}}</a>
+          </center>
+      </td>
       {% endfor %}
-    </ul>
+      </tr>
+    </table>
+    </center>
+
     {% endif %}
 
     <h2><center>页面跳转</center></h2>
     <p><center>
-      <a href="/1">第一页</a>
+      <a href="../actor/1">第一页</a>
       ...
       {% for page in pages %}
-      <a href="/{{page}}">{{page}}</a>
+      <a href="../actor/{{page}}">{{page}}</a>
       {% endfor %}
       ...
-      <a href="/240">尾页</a>
+      <a href="../actor/240">尾页</a>
     </center></p>
     
     <h1><center>end</center></h1>
+    <center><a href="/1">电影列表</a></center>
   </body>
 </html>

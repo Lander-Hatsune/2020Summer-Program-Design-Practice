@@ -3,32 +3,40 @@
   <head>
     <meta charset="utf-8">
     <meta name="author" content="LanderX">
-    <title>Emitm电影网:让生活遇见电影</title>
+    <title>{{title}}-Emitm电影网:让生活遇见电影</title>
   </head>
   <body>
-    <h1>电影列表</h1>
+    <h1><center>{{title}}</center></h1>
 
-    {% if movies %}
+    <center>
+      <img src="/static/movielist/{{title}}.png"
+           alt="暂无图片">
+    </center>
+
+    <h2>影片简介</h2>
+    <p>{{intro}}</p>
+
+    <h2>演职员表</h2>
     <ul>
-      {% for movie_title in movies %}
-      <li><a href="/{{ movie_title }}"><img src="/static/movielist/{{movie_title}}.png"
-                                            alt="暂无图片"></a></li>
-      <li><a href="/{{ movie_title }}">{{ movie_title }}</a></li>
+      {% for actor in actors %}
+      <li>
+        <a href="../actor/{{actor}}">
+          <img src="/static/movielist/actor/{{actor}}.png"
+               alt="暂无照片">
+        </a>
+        <a href="../actor/{{actor}}">{{actor}}</a>
+      </li>
       {% endfor %}
     </ul>
-    {% endif %}
 
-    <h2><center>页面跳转</center></h2>
-    <p><center>
-      <a href="/1">第一页</a>
-      ...
-      {% for page in pages %}
-      <a href="/{{page}}">{{page}}</a>
+    <h2>影评</h2>
+    <ul>
+      {% for comment in comments %}
+      <li>{{comment}}</li>
       {% endfor %}
-      ...
-      <a href="/51">尾页</a>
-    </center></p>
+    </ul>
     
     <h1><center>end</center></h1>
+    <center><a href="/1">返回首页</a></center>
   </body>
 </html>

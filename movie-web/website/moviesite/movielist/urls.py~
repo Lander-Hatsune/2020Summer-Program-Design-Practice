@@ -6,6 +6,9 @@ urlpatterns = [
     path(r"actor/", views.actorindex, name='actorindex'),
     path(r"actor/<int:page>", views.actorindex, name='actorindex'),
     path(r"actor/<str:name>", views.actorinfo, name='actorinfo'),
+    path(r"searchpage/", views.searchpage, name='searchpage'),
+    path(r"s/", views.search, name='search'),
+    path(r"s/<int:page>", views.search, name='search'),
     path(r'<int:page>/', views.index, name='index'),
     path(r"<str:title>/", views.info, name='info'),
 ]

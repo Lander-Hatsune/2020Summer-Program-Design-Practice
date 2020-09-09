@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.shortcuts import redirect
 
 import json
 import re
@@ -15,10 +16,11 @@ actor_names = list(actors.keys())
 
 
 def index(request, page=1):
-    pages = filter(lambda x: x > 0 and x < 52, list(range(page - 2, page + 3)))
+    pages = filter(lambda x: x > 0 and x < 52, list(range(page - 3, page + 4)))
     context = {
         'movies': movie_titles[(page - 1) * 20:page * 20],
         'pages': pages,
+        'tot': len(movie_titles),
     }
     return render(request, 'movielist/index.html', context)
 
@@ -37,7 +39,7 @@ def actorinfo(request, name):
     name = name
     intro = actors[name]['intro']
     acted = actors[name]['acted']
-    cooperated = sorted(actors[name]['coop'].items(), key=lambda x: x[1])[:10]
+    cooperated = sorted(actors[name]['coop'].items(), key=lambda x: x[1], reverse=True)[:10]
     context = {
         'name': name,
         'intro': intro,
@@ -48,11 +50,12 @@ def actorinfo(request, name):
 
 
 def actorindex(request, page=1):
-    pages = filter(lambda x: x > 0 and x < 241, list(range(page - 2, page + 3)))
+    pages = filter(lambda x: x > 0 and x < 240, list(range(page - 3, page + 4)))
     print(actor_names[(page - 1) * 20:page * 20])
     context = {
         'actor_names': actor_names[(page - 1) * 20:page * 20],
         'pages': pages,
+        'tot': len(actor_names)
     }
     return render(request, 'movielist/actorindex.html', context)
 
@@ -62,7 +65,7 @@ def searchpage(request):
 
 last_string = ''
 last_choice = ''
-last_ans = set()
+last_ans = []
 
 
 def search_bk(string, choice):
@@ -74,8 +77,8 @@ def search_bk(string, choice):
 
     if string == last_string and choice == last_choice:
         return 0, last_ans
-    if string == '' and choice == '':
-        return 0, last_ans
+    #if string == '' and choice == '':
+    #return 0, last_ans
 
     pat = re.compile(r".*?" + string + ".*?")
 
@@ -140,7 +143,7 @@ def search(request, page=1):
         searchstring = "搜索影评" + string
 
     totalpages = len(ans)//20 + 1
-    pages = filter(lambda x: x > 0 and x <= totalpages, list(range(page - 2, page + 3)))
+    pages = filter(lambda x: x > 0 and x <= totalpages, list(range(page - 3, page + 4)))
         
     context = {
         'searchstring': searchstring,
@@ -149,5 +152,36 @@ def search(request, page=1):
         'totalpages': totalpages,
         'cnt': len(ans),
         'pages': pages,
+        'q': string,
+        'c': choice,
     }
     return render(request, 'movielist/searchresult.html', context)
+
+
+def turnto(request):
+    if 'p' in request.GET and request.GET['p']:
+        page = request.GET['p']
+        try:
+            int(page)
+        except(ValueError):
+            return redirect('/1')
+        if int(page) > 51:
+            return redirect('/51')
+        elif int(page) < 1:
+            return redirect('/1')
+
+        return redirect('/' + page)
+
+def actorturnto(request):
+    if 'p' in request.GET and request.GET['p']:
+        page = request.GET['p']
+        try:
+            int(page)
+        except(ValueError):
+            return redirect('/actor/1')
+
+        if int(page) > 239:
+            return redirect('/actor/239')
+        elif int(page) < 1:
+            return redirect('/actor/1')
+        return redirect('/actor/' + page)

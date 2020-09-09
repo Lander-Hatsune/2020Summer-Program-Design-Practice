@@ -7,7 +7,9 @@
   </head>
   <body>
     <h1><center>{{name}}</center></h1>
-
+    <center><a href="/searchpage">搜索</a></center>
+    <center><a href="/">电影列表</a></center>
+    <center><a href="/actor/1">演员列表</a></center>
     <center>
       <img src="/static/movielist/actor/{{name}}.png"
            alt="暂无图片">
@@ -17,30 +19,53 @@
     <p>{{intro}}</p>
 
     <h2>参演影视</h2>
-      {% for movie in acted %}
-      <li>
-        <a href="/{{movie}}">
-          <img src="/static/movielist/{{movie}}.png"
-               alt="暂无图片">
-        </a>
-        <a href="/{{movie}}">{{movie}}</a>
-      </li>
+
+    <center>
+    <table border="1">
+      <tr>
+        {% for movie in acted %}
+        {% if forloop.counter0 == 5 or forloop.counter0 == 10 or forloop.counter0 == 15 %}
+      </tr><tr>
+        {% endif %}
+      <td>
+        <center>
+          <a href="/{{movie}}">
+            <img src="/static/movielist/{{movie}}.png"
+                 alt="暂无图片"></a><br>
+          <a href="/{{movie}}">{{movie}}</a>
+        </center>
+      </td>
       {% endfor %}
-    </ul>
+      </tr>
+    </table>
+    </center>
 
     <h2>合作演员</h2>
-    <ul>
-      {% for coop, times in cooperated %}
-      <li>
-        <a href="/actor/{{coop}}">
-          <img src="/static/movielist/actor/{{coop}}.png"
-               alt="暂无照片">
-        </a>
-        <a href="/actor/{{coop}}">{{coop}}(合作{{times}}次)</a>
+        <center>
+    <table border="1">
+      <tr>
+        {% for coop, times in cooperated %}
+        {% if forloop.counter0 == 5 or forloop.counter0 == 10 or forloop.counter0 == 15 %}
+      </tr><tr>
+        {% endif %}
+      <td>
+        <center>
+          <a href="/actor/{{coop}}">
+            <img src="/static/movielist/actor/{{coop}}.png"
+                 alt="暂无照片">
+          </a><br>
+          <a href="/actor/{{coop}}">{{coop}}(合作{{times}}次)</a>
+        </center>
+      </td>
       {% endfor %}
-    </ul>
+      </tr>
+    </table>
+    </center>
     
     <h1><center>end</center></h1>
-    <center><a href="../actor/1">返回首页</a></center>
+    <center><a href="/searchpage">搜索</a></center>
+    <center><a href="/">电影列表</a></center>
+    <center><a href="/actor/1">演员列表</a></center>
+
   </body>
 </html>

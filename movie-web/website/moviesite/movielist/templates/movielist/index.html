@@ -8,14 +8,28 @@
   <body>
     <h1><center>电影列表</center></h1>
     <center><a href="/searchpage">搜索</a></center>
+    <center><a href="/actor/1">演员列表</a></center>
+    <br><br>
+    <center><strong>共有{{tot}}部电影</strong></center>
     {% if movies %}
-    <ul>
-      {% for movie_title in movies %}
-      <li><a href="/{{ movie_title }}"><img src="/static/movielist/{{movie_title}}.png"
-                                            alt="暂无图片"></a></li>
-      <li><a href="/{{ movie_title }}">{{ movie_title }}</a></li>
+    <center>
+    <table border="1">
+      <tr>
+        {% for movie_title in movies %}
+        {% if forloop.counter0 == 5 or forloop.counter0 == 10 or forloop.counter0 == 15 %}
+      </tr><tr>
+        {% endif %}
+      <td>
+        <center>
+          <a href="/{{ movie_title }}"><img src="/static/movielist/{{movie_title}}.png"
+                                            alt="暂无图片"></a><br>
+          <a href="/{{ movie_title }}">{{ movie_title }}</a>
+        </center>
+      </td>
       {% endfor %}
-    </ul>
+      </tr>
+    </table>
+    </center>
     {% endif %}
 
     <h2><center>页面跳转</center></h2>
@@ -28,8 +42,14 @@
       ...
       <a href="/51">尾页</a>
     </center></p>
+    <form action="/turnto" method="get"><center>
+        <input type="int" name="p" style="height:38px;width:50px">
+        <input type="submit" value="转至" style="height:40px;width:40px">
+    </center></form>
+
     
     <h1><center>end</center></h1>
+    <center><a href="/searchpage">搜索</a></center>
     <center><a href="/actor/1">演员列表</a></center>
   </body>
 </html>
