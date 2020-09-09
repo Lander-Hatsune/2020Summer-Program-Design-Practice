@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="author" content="LanderX">
+    <title>Emitm电影网:让生活遇见电影</title>
+  </head>
+  <body>
+    <h1>电影列表</h1>
+    {% load static %}
+
+    {% if movies %}
+    <ul>
+      {% for movie in movies %}
+      <li><a href="/{{ movie.movie_title }}"><img src="{% static {{ movie.movie_img_url }} %}"></a></li>
+      <li><a href="/{{ movie.movie_title }}">{{ movie.movie_title }}</a></li>
+      {% endfor %}
+    </ul>
+    <h1><center>end</center></h1>
+    {% else %}
+    <p>No movies</p>
+    {% endif %}
+  </body>
+</html>

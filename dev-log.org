@@ -41,3 +41,10 @@
     }
     #+end_src
 
+
+* movie-web
+** exp
+python中无论何处的相对路径起点都是main所在目录
+
+** problem shooting
+

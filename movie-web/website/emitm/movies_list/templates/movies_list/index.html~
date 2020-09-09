@@ -1,0 +1,13 @@
+{% load static %}
+
+{% if movies %}
+<ul>
+  {% for movie in movies %}
+  <li><a href="/{{ movie.movie_title }}"><img src="{% static {{ movie.movie_img_url }} %}"></a></li>
+  <li><a href="/{{ movie.movie_title }}">{{ movie.movie_title }}</a></li>
+  {% endfor %}
+</ul>
+<p><center>end</center></p>
+{% else %}
+<p>No movies</p>
+{% endif %}
