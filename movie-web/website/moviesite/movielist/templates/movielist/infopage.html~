@@ -7,7 +7,9 @@
   </head>
   <body>
     <h1><center>{{title}}</center></h1>
-
+    <center><a href="/searchpage">搜索</a></center>
+    <center><a href="/">电影列表</a></center>
+    <center><a href="/actor/1">演员列表</a></center>
     <center>
       <img src="/static/movielist/{{title}}.png"
            alt="暂无图片">
@@ -17,18 +19,29 @@
     <p>{{intro}}</p>
 
     <h2>演职员表</h2>
-    <ul>
-      {% for actor in actors %}
-      <li>
-        <a href="../actor/{{actor}}">
-          <img src="/static/movielist/actor/{{actor}}.png"
-               alt="暂无照片">
-        </a>
-        <a href="../actor/{{actor}}">{{actor}}</a>
-      </li>
-      {% endfor %}
-    </ul>
 
+        <center>
+    <table border="1">
+      <tr>
+        {% for actor in actors %}
+        {% if forloop.counter0 == 5 or forloop.counter0 == 10 or forloop.counter0 == 15 %}
+      </tr><tr>
+        {% endif %}
+      <td>
+        <center>
+          <a href="../actor/{{actor}}">
+            <img src="/static/movielist/actor/{{actor}}.png"
+                 alt="暂无照片">
+          </a><br>
+          <a href="../actor/{{actor}}">{{actor}}</a>
+        </center>
+      </td>
+      {% endfor %}
+      </tr>
+    </table>
+    </center>
+
+    
     <h2>影评</h2>
     <ul>
       {% for comment in comments %}
@@ -37,6 +50,9 @@
     </ul>
     
     <h1><center>end</center></h1>
-    <center><a href="/1">返回首页</a></center>
+    <center><a href="/searchpage">搜索</a></center>
+    <center><a href="/">电影列表</a></center>
+    <center><a href="/actor/1">演员列表</a></center>
+
   </body>
 </html>
